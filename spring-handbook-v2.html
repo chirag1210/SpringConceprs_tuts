@@ -1,0 +1,1970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spring Engineering Handbook — Complete Interview Guide v2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+  :root {
+    --blue: #3b82f6; --blue-light: #eff6ff; --blue-dark: #1e40af;
+    --green: #10b981; --green-light: #ecfdf5; --green-dark: #065f46;
+    --yellow: #f59e0b; --yellow-light: #fffbeb; --yellow-dark: #92400e;
+    --red: #ef4444; --red-light: #fef2f2; --red-dark: #991b1b;
+    --purple: #8b5cf6; --purple-light: #f5f3ff; --purple-dark: #5b21b6;
+    --cyan: #06b6d4; --cyan-light: #ecfeff; --cyan-dark: #155e75;
+    --orange: #f97316; --orange-light: #fff7ed;
+    --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb;
+    --gray-300: #d1d5db; --gray-400: #9ca3af; --gray-500: #6b7280;
+    --gray-600: #4b5563; --gray-700: #374151; --gray-800: #1f2937; --gray-900: #111827;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --radius: 12px; --radius-sm: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--gray-50); color: var(--gray-900); line-height: 1.6; }
+  .cover { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); color: #fff; text-align: center; padding: 4rem 2rem; position: relative; overflow: hidden; }
+  .cover::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 50%, rgba(59,130,246,0.08) 0%, transparent 50%), radial-gradient(circle at 70% 50%, rgba(139,92,246,0.08) 0%, transparent 50%); }
+  .cover-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); padding: 0.5rem 1.25rem; border-radius: 100px; font-size: 0.8rem; color: #93c5fd; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 2rem; }
+  .cover h1 { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 1rem; } 
+  .cover h1 span { background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .cover-sub { font-size: clamp(1rem, 2vw, 1.5rem); color: #94a3b8; max-width: 700px; margin-bottom: 2.5rem; font-weight: 300; }
+  .cover-meta { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; font-size: 0.85rem; color: #64748b; }
+  .cover-meta span { display: flex; align-items: center; gap: 0.4rem; } .cover-meta strong { color: #cbd5e1; }
+  .cover .toc { margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; max-width: 900px; width: 100%; text-align: left; }
+  .cover .toc a { color: #94a3b8; text-decoration: none; font-size: 0.82rem; padding: 0.4rem 0.75rem; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); transition: all 0.15s; display: flex; align-items: center; gap: 0.5rem; }
+  .cover .toc a:hover { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.3); color: #e2e8f0; }
+  .cover .toc .num { color: var(--blue); font-weight: 600; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .section { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 2rem; overflow: hidden; border: 1px solid var(--gray-200); }
+  .section-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; gap: 1rem; }
+  .section-header .num { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+  .section-header h2 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.01em; }
+  .section-body { padding: 2rem; }
+  .theme-blue .num, .theme-blue .section-header { background: var(--blue-light); } .theme-blue .num { background: var(--blue); color: #fff; } .theme-blue h2 { color: var(--blue-dark); }
+  .theme-green .num, .theme-green .section-header { background: var(--green-light); } .theme-green .num { background: var(--green); color: #fff; } .theme-green h2 { color: var(--green-dark); }
+  .theme-purple .num, .theme-purple .section-header { background: var(--purple-light); } .theme-purple .num { background: var(--purple); color: #fff; } .theme-purple h2 { color: var(--purple-dark); }
+  .theme-yellow .num, .theme-yellow .section-header { background: var(--yellow-light); } .theme-yellow .num { background: var(--yellow); color: #fff; } .theme-yellow h2 { color: var(--yellow-dark); }
+  .theme-red .num, .theme-red .section-header { background: var(--red-light); } .theme-red .num { background: var(--red); color: #fff; } .theme-red h2 { color: var(--red-dark); }
+  .theme-cyan .num, .theme-cyan .section-header { background: var(--cyan-light); } .theme-cyan .num { background: var(--cyan); color: #fff; } .theme-cyan h2 { color: var(--cyan-dark); }
+  .theme-orange .num, .theme-orange .section-header { background: var(--orange-light); } .theme-orange .num { background: var(--orange); color: #fff; } .theme-orange h2 { color: #9a3412; }
+  .info-card { border-radius: var(--radius-sm); padding: 1.25rem 1.5rem; margin: 1.25rem 0; border-left: 4px solid; }
+  .info-card .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-bottom: 0.5rem; }
+  .info-card p { margin: 0.25rem 0; font-size: 0.9rem; } .info-card ul { margin: 0.5rem 0 0 1.25rem; font-size: 0.9rem; } .info-card ul li { margin-bottom: 0.25rem; }
+  .card-key-takeaway { background: var(--blue-light); border-color: var(--blue); } .card-key-takeaway .label { color: var(--blue); }
+  .card-interview { background: var(--yellow-light); border-color: var(--yellow); } .card-interview .label { color: var(--yellow); }
+  .card-common-mistake { background: var(--red-light); border-color: var(--red); } .card-common-mistake .label { color: var(--red); }
+  .card-internal { background: var(--purple-light); border-color: var(--purple); } .card-internal .label { color: var(--purple); }
+  .card-best-practice { background: var(--green-light); border-color: var(--green); } .card-best-practice .label { color: var(--green); }
+  .card-production { background: var(--cyan-light); border-color: var(--cyan); } .card-production .label { color: var(--cyan); }
+  .table-wrap { overflow-x: auto; margin: 1.25rem 0; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  thead { background: var(--gray-800); color: #fff; } th { padding: 0.75rem 1rem; text-align: left; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--gray-100); } tr:last-child td { border-bottom: none; } tbody tr:hover { background: var(--gray-50); } tbody tr:nth-child(even) { background: var(--gray-50); }
+  .code-block { background: #1e293b; border-radius: var(--radius-sm); margin: 1.25rem 0; overflow: hidden; box-shadow: var(--shadow-md); border: 1px solid #334155; }
+  .code-header { display: flex; justify-content: space-between; align-items: center; padding: 0.55rem 1rem; background: #334155; color: #94a3b8; font-size: 0.72rem; font-family: 'JetBrains Mono', monospace; border-bottom: 1px solid #475569; }
+  .code-body { padding: 1rem 1.25rem; overflow-x: auto; }
+  .code-body pre { margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.65; color: #e2e8f0; }
+  .code-body .kw { color: #c084fc; } .code-body .str { color: #34d399; } .code-body .ann { color: #fbbf24; } .code-body .cm { color: #64748b; font-style: italic; } .code-body .fn { color: #60a5fa; } .code-body .tp { color: #f472b6; }
+  .code-body .hl-line { background: rgba(59,130,246,0.15); display: block; margin: 0 -1.25rem; padding: 0 1.25rem; border-left: 3px solid var(--blue); }
+  .code-body .hl-line-red { background: rgba(239,68,68,0.15); display: block; margin: 0 -1.25rem; padding: 0 1.25rem; border-left: 3px solid var(--red); }
+  .code-body .hl-line-green { background: rgba(16,185,129,0.15); display: block; margin: 0 -1.25rem; padding: 0 1.25rem; border-left: 3px solid var(--green); }
+  .flow-diagram { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.3rem; padding: 1.5rem; background: var(--gray-50); border-radius: var(--radius-sm); border: 1px dashed var(--gray-300); margin: 1.25rem 0; }
+  .flow-step { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 0.6rem 0.85rem; min-width: 90px; box-shadow: var(--shadow-sm); }
+  .flow-step .icon { font-size: 1.2rem; } .flow-step .title { font-size: 0.72rem; font-weight: 600; color: var(--gray-700); text-align: center; } .flow-step .sub { font-size: 0.62rem; color: var(--gray-400); text-align: center; }
+  .flow-arrow { color: var(--gray-400); font-size: 1.1rem; font-weight: 300; }
+  .flow-step.step-blue { border-color: var(--blue); background: var(--blue-light); } .flow-step.step-green { border-color: var(--green); background: var(--green-light); }
+  .flow-step.step-purple { border-color: var(--purple); background: var(--purple-light); } .flow-step.step-yellow { border-color: var(--yellow); background: var(--yellow-light); }
+  .flow-step.step-red { border-color: var(--red); background: var(--red-light); } .flow-step.step-cyan { border-color: var(--cyan); background: var(--cyan-light); }
+  .arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; margin: 1.25rem 0; }
+  .arch-block { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 1rem; text-align: center; box-shadow: var(--shadow-sm); }
+  .arch-block .label-top { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 0.25rem; } .arch-block .value { font-size: 0.82rem; color: var(--gray-600); }
+  .arch-block.b-blue { border-top: 3px solid var(--blue); } .arch-block.b-green { border-top: 3px solid var(--green); } .arch-block.b-purple { border-top: 3px solid var(--purple); }
+  .arch-block.b-yellow { border-top: 3px solid var(--yellow); } .arch-block.b-red { border-top: 3px solid var(--red); } .arch-block.b-cyan { border-top: 3px solid var(--cyan); }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.25rem 0; }
+  .compare-card { border-radius: var(--radius-sm); padding: 1.25rem; border: 1px solid var(--gray-200); }
+  .compare-card h4 { font-size: 0.82rem; margin-bottom: 0.6rem; padding-bottom: 0.5rem; border-bottom: 2px solid; }
+  .compare-card.bad h4 { color: var(--red); border-color: var(--red); } .compare-card.good h4 { color: var(--green); border-color: var(--green); } .compare-card.warn h4 { color: var(--yellow); border-color: var(--yellow); }
+  .compare-card p { font-size: 0.82rem; } .compare-card ul { margin: 0.5rem 0 0 1.1rem; font-size: 0.82rem; } .compare-card ul li { margin-bottom: 0.3rem; }
+  .section-divider { height: 1px; background: var(--gray-200); margin: 1.5rem 0; }
+  .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.03em; }
+  .badge-blue { background: var(--blue-light); color: var(--blue); } .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-red { background: var(--red-light); color: var(--red); } .badge-purple { background: var(--purple-light); color: var(--purple); }
+  .badge-yellow { background: var(--yellow-light); color: var(--yellow); } .badge-cyan { background: var(--cyan-light); color: var(--cyan); }
+  .tag-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0; }
+  .tag { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.68rem; font-weight: 500; font-family: 'JetBrains Mono', monospace; }
+  .tag-t1 { background: #dbeafe; color: #1e40af; } .tag-t2 { background: #dcfce7; color: #166534; } .tag-t3 { background: #fef3c7; color: #92400e; } .tag-t4 { background: #fce7f3; color: #9d174d; } .tag-t5 { background: #ede9fe; color: #5b21b6; }
+  .timeline { position: relative; padding-left: 2rem; margin: 1.25rem 0; }
+  .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: var(--gray-200); }
+  .timeline-item { position: relative; padding-bottom: 1.25rem; } .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-item::before { content: ''; position: absolute; left: -1.65rem; top: 0.35rem; width: 12px; height: 12px; border-radius: 50%; background: var(--blue); border: 2px solid #fff; box-shadow: 0 0 0 2px var(--blue); }
+  .timeline-item .time-title { font-weight: 600; font-size: 0.88rem; } .timeline-item .time-desc { font-size: 0.8rem; color: var(--gray-500); margin-top: 0.15rem; }
+  .pipeline { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.3rem; padding: 1.25rem; background: #fff; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); margin: 1.25rem 0; font-size: 0.8rem; font-weight: 500; }
+  .pipeline .pipe-item { background: var(--gray-100); padding: 0.35rem 0.7rem; border-radius: 6px; white-space: nowrap; }
+  .pipeline .pipe-item.p-blue { background: var(--blue-light); color: var(--blue-dark); } .pipeline .pipe-item.p-green { background: var(--green-light); color: var(--green-dark); }
+  .pipeline .pipe-item.p-purple { background: var(--purple-light); color: var(--purple-dark); } .pipeline .pipe-item.p-yellow { background: var(--yellow-light); color: var(--yellow-dark); }
+  .pipeline .pipe-item.p-red { background: var(--red-light); color: var(--red-dark); } .pipeline .pipe-item.p-cyan { background: var(--cyan-light); color: var(--cyan-dark); }
+  .pipeline .pipe-sep { color: var(--gray-300); }
+  .sub-section { margin: 1.5rem 0; } .sub-section h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+  .sub-section h4 { font-size: 0.88rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--gray-700); } .sub-section p { font-size: 0.9rem; color: var(--gray-600); margin-bottom: 0.75rem; }
+  .sub-section ul { margin: 0 0 0.75rem 1.25rem; font-size: 0.9rem; color: var(--gray-600); } .sub-section ul li { margin-bottom: 0.25rem; }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+  .summary-item { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.85rem; background: var(--gray-50); border-radius: var(--radius-sm); border: 1px solid var(--gray-200); }
+  .summary-item .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 0.4rem; } .summary-item .text { font-size: 0.82rem; color: var(--gray-700); }
+  .flow-vertical { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; padding: 1.25rem; margin: 1rem 0; }
+  .flow-vertical .v-box { border: 1px solid var(--gray-200); border-radius: 6px; padding: 0.5rem 1.25rem; background: #fff; box-shadow: var(--shadow-sm); text-align: center; font-size: 0.82rem; }
+  .flow-vertical .v-box.b-blue { border-color: var(--blue); background: var(--blue-light); } .flow-vertical .v-box.b-green { border-color: var(--green); background: var(--green-light); }
+  .flow-vertical .v-box.b-purple { border-color: var(--purple); background: var(--purple-light); } .flow-vertical .v-box.b-red { border-color: var(--red); background: var(--red-light); }
+  .flow-vertical .v-box.b-yellow { border-color: var(--yellow); background: var(--yellow-light); } .flow-vertical .v-box.b-cyan { border-color: var(--cyan); background: var(--cyan-light); }
+  .flow-vertical .v-down { color: var(--gray-400); font-size: 1rem; }
+  .diagram-box { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 1.25rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; overflow-x: auto; }
+  @media print { body { background: #fff; } .cover { min-height: 100vh; break-after: page; } .section { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; } .code-block { break-inside: avoid; } .info-card { break-inside: avoid; } }
+  @media (max-width: 640px) { .compare-grid { grid-template-columns: 1fr; } .flow-diagram { flex-direction: column; } .flow-arrow { transform: rotate(90deg); } .section-header { padding: 1rem 1.25rem; } .section-body { padding: 1.25rem; } }
+</style>
+</head>
+<body>
+<section class="cover">
+  <div class="cover-badge">☕ Complete Interview Reference · v2.0</div>
+  <h1>Spring<br><span>Engineering Handbook</span></h1>
+  <p class="cover-sub">25+ topics · 40+ flow diagrams · 60+ code examples<br>IoC · DI · AOP · Transactions · JPA · Security · Reactive · Cloud · Testing · Production Patterns</p>
+  <div class="cover-meta">
+    <span>📄 <strong>Expanded</strong> beyond original cheat sheet</span>
+    <span>🎯 <strong>Product-company</strong> interview focused</span>
+    <span>⚡ <strong>Visual</strong> learning optimized</span>
+  </div>
+  <div class="toc">
+    <a href="#s01"><span class="num">01</span> IoC &amp; Circular Deps</a>
+    <a href="#s02"><span class="num">02</span> Dependency Injection</a>
+    <a href="#s03"><span class="num">03</span> Bean Lifecycle</a>
+    <a href="#s04"><span class="num">04</span> Bean Scope &amp; Proxies</a>
+    <a href="#s05"><span class="num">05</span> AOP Deep Dive</a>
+    <a href="#s06"><span class="num">06</span> @Transactional</a>
+    <a href="#s07"><span class="num">07</span> Auto-Configuration</a>
+    <a href="#s08"><span class="num">08</span> DispatcherServlet</a>
+    <a href="#s09"><span class="num">09</span> REST API</a>
+    <a href="#s10"><span class="num">10</span> Exception Handling</a>
+    <a href="#s11"><span class="num">11</span> Validation</a>
+    <a href="#s12"><span class="num">12</span> JPA / Hibernate</a>
+    <a href="#s13"><span class="num">13</span> Spring Security</a>
+    <a href="#s14"><span class="num">14</span> Boot Internals &amp; Startup</a>
+    <a href="#s15"><span class="num">15</span> Testing Strategies</a>
+    <a href="#s16"><span class="num">16</span> Spring Data JPA Advanced</a>
+    <a href="#s17"><span class="num">17</span> Async &amp; Scheduling</a>
+    <a href="#s18"><span class="num">18</span> Caching Deep Dive</a>
+    <a href="#s19"><span class="num">19</span> WebFlux Reactive</a>
+    <a href="#s20"><span class="num">20</span> WebSockets &amp; SSE</a>
+    <a href="#s21"><span class="num">21</span> Microservices Patterns</a>
+    <a href="#s22"><span class="num">22</span> Common Interview Traps</a>
+    <a href="#s23"><span class="num">23</span> Real Production Scenarios</a>
+  </div>
+</section>
+<div class="container">
+
+<section class="section theme-blue" id="s01">
+<div class="section-header"><span class="num">01</span><h2>Inversion of Control &amp; Circular Dependencies</h2></div>
+<div class="section-body">
+<div class="compare-grid">
+<div class="compare-card bad"><h4>❌ Without Spring</h4><p><code>UserRepository repo = new UserRepository();</code></p><p><code>UserService svc = new UserService(repo);</code></p><ul><li>You control creation</li><li>Tight coupling</li><li>Hard to test</li></ul></div>
+<div class="compare-card good"><h4>✅ With Spring (IoC)</h4><p><code>@Autowired private UserRepository repo;</code></p><p>Container manages everything</p><ul><li>Loose coupling</li><li>Easy testing</li><li>Managed lifecycle</li></ul></div>
+</div>
+
+<div class="sub-section"><h3>⚙️ Spring Container Pipeline</h3>
+<div class="pipeline">
+<span class="pipe-item p-blue">Scan classes</span><span class="pipe-sep">→</span>
+<span class="pipe-item p-green">Create objects</span><span class="pipe-sep">→</span>
+<span class="pipe-item p-purple">Store beans</span><span class="pipe-sep">→</span>
+<span class="pipe-item p-yellow">Resolve deps</span><span class="pipe-sep">→</span>
+<span class="pipe-item p-blue">Inject deps</span><span class="pipe-sep">→</span>
+<span class="pipe-item p-green">Lifecycle mgmt</span>
+</div>
+</div>
+
+<div class="info-card card-internal"><div class="label">🔬 Under The Hood — Spring is NOT magic</div>
+<p><strong>ApplicationContext</strong> is the central IoC container. Internally:</p>
+<div class="arch-grid">
+<div class="arch-block b-blue"><div class="label-top">Reflection</div><div class="value">Inspects classes at runtime</div></div>
+<div class="arch-block b-green"><div class="label-top">Object Factory</div><div class="value">Creates &amp; caches beans</div></div>
+<div class="arch-block b-purple"><div class="label-top">Dep Graph Manager</div><div class="value">Resolves complex chains</div></div>
+<div class="arch-block b-yellow"><div class="label-top">Proxy Generator</div><div class="value">Enables AOP, TX, Security</div></div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🔄 Circular Dependency — The 3-Level Cache <span class="badge badge-red">SENIOR INTERVIEW</span></h3>
+<div class="card-interview info-card"><div class="label">🎯 Most Asked Senior-Level Question</div><p><strong>"How does Spring resolve circular dependencies?"</strong></p></div>
+<p>Spring uses a <strong>three-level singleton cache</strong> inside <code>DefaultSingletonBeanRegistry</code>:</p>
+<div class="diagram-box">
+<div style="display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;">
+<div style="border:2px solid var(--blue);border-radius:8px;padding:0.6rem 1rem;background:var(--blue-light);text-align:center;">
+<div style="font-weight:700;font-size:0.85rem;">Level 1</div><div style="font-size:0.75rem;color:var(--gray-500);">singletonObjects</div>
+<div style="font-size:0.65rem;color:var(--gray-400);">Fully created beans</div><div style="font-size:0.65rem;color:var(--blue);">← All deps injected</div></div>
+<div style="border:2px solid var(--yellow);border-radius:8px;padding:0.6rem 1rem;background:var(--yellow-light);text-align:center;">
+<div style="font-weight:700;font-size:0.85rem;">Level 2</div><div style="font-size:0.75rem;color:var(--gray-500);">earlySingletonObjects</div>
+<div style="font-size:0.65rem;color:var(--gray-400);">Semi-created beans</div><div style="font-size:0.65rem;color:var(--yellow);">← Exposed before full init</div></div>
+<div style="border:2px solid var(--purple);border-radius:8px;padding:0.6rem 1rem;background:var(--purple-light);text-align:center;">
+<div style="font-weight:700;font-size:0.85rem;">Level 3</div><div style="font-size:0.75rem;color:var(--gray-500);">singletonFactories</div>
+<div style="font-size:0.65rem;color:var(--gray-400);">Object factories</div><div style="font-size:0.65rem;color:var(--purple);">← Lazy proxy resolution</div></div>
+</div>
+</div>
+<div class="flow-vertical">
+<div class="v-box b-blue">Bean A starts creation</div><div class="v-down">↓ needs Bean B</div>
+<div class="v-box b-green">Bean B starts creation</div><div class="v-down">↓ needs Bean A</div>
+<div class="v-box b-purple">Level 3 exposes Bean A as early reference (ObjectFactory)</div><div class="v-down">↓</div>
+<div class="v-box b-green">Bean B receives early Bean A → completes</div><div class="v-down">↓</div>
+<div class="v-box b-blue">Bean A receives fully created Bean B → completes</div>
+</div>
+<div style="margin-top:0.75rem;"><span class="badge badge-red">Key Point</span> Constructor injection CANNOT resolve circular deps. Only <strong>field/setter injection</strong> works because Spring can expose the early reference before constructor completes.</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🏛️ BeanFactory vs ApplicationContext</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Feature</th><th>BeanFactory</th><th>ApplicationContext</th></tr></thead>
+<tbody>
+<tr><td>Lazy loading</td><td>✅ Default</td><td>❌ Eager (unless @Lazy)</td></tr>
+<tr><td>AOP support</td><td>❌</td><td>✅</td></tr>
+<tr><td>Event publishing</td><td>❌</td><td>✅</td></tr>
+<tr><td>Message i18n</td><td>❌</td><td>✅</td></tr>
+<tr><td>BeanPostProcessor auto-reg</td><td>❌ Manual</td><td>✅ Auto</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="sub-section"><h3>📋 @Lazy Proxy Pitfalls</h3>
+<div class="code-block"><div class="code-header"><span>@Lazy behavior</span><span>Proxy-based lazy init</span></div>
+<div class="code-body"><pre><span class="ann">@Lazy</span>
+<span class="ann">@Component</span>
+<span class="kw">public class</span> <span class="tp">ExpensiveBean</span> { }
+
+<span class="ann">@Component</span>
+<span class="kw">public class</span> <span class="tp">Consumer</span> {
+    <span class="hl-line"><span class="ann">@Lazy</span> <span class="cm">// Proxy injected, not actual bean</span></span>
+    <span class="ann">@Autowired</span> <span class="kw">private</span> <span class="tp">ExpensiveBean</span> bean;
+}</pre></div></div>
+<div class="card-common-mistake info-card"><div class="label">🚨 Caution</div><p><code>@Lazy</code> at injection point creates a <strong>proxy</strong>. This proxy may not have the same behavior as the real bean (AOP limitations).</p></div>
+</div>
+</div>
+</section>
+
+<section class="section theme-green" id="s02">
+<div class="section-header"><span class="num">02</span><h2>Dependency Injection — Full Detail</h2></div>
+<div class="section-body">
+<div class="sub-section"><h3>📦 Constructor Injection <span class="badge badge-green">BEST PRACTICE</span></h3>
+<div class="code-block"><div class="code-header"><span>UserService.java</span><span>✓ Recommended</span></div>
+<div class="code-body"><pre><span class="kw">public class</span> <span class="tp">UserService</span> {
+    <span class="kw">private final</span> <span class="tp">UserRepository</span> repo;
+
+    <span class="kw">public</span> <span class="fn">UserService</span>(<span class="tp">UserRepository</span> repo) {
+        <span class="hl-line"><span class="kw">this</span>.repo = repo; <span class="cm">// Dependency from outside</span></span>
+    }
+}</pre></div></div>
+<div class="summary-grid">
+<div class="summary-item"><span class="dot" style="background:var(--blue)"></span><span class="text"><strong>Immutable</strong> — <code>final</code> prevents change</span></div>
+<div class="summary-item"><span class="dot" style="background:var(--green)"></span><span class="text"><strong>Testable</strong> — <code>new UserService(mockRepo)</code></span></div>
+<div class="summary-item"><span class="dot" style="background:var(--purple)"></span><span class="text"><strong>Circular detection</strong> — fails at startup</span></div>
+<div class="summary-item"><span class="dot" style="background:var(--yellow)"></span><span class="text"><strong>Mandatory</strong> — can't create without deps</span></div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>⚔️ Field vs Setter vs Constructor</h3>
+<div class="compare-grid">
+<div class="compare-card bad"><h4>❌ Field Injection</h4>
+<div class="code-block" style="margin:0.5rem 0;"><div class="code-body" style="padding:0.5rem;"><pre><span class="ann">@Autowired</span> <span class="kw">private</span> <span class="tp">UserRepository</span> repo;</pre></div></div>
+<ul><li>Hidden dependency</li><li>Reflection-based (slower)</li><li>No immutability</li><li>Hard to unit test</li></ul></div>
+<div class="compare-card warn"><h4>⚠️ Setter Injection</h4>
+<div class="code-block" style="margin:0.5rem 0;"><div class="code-body" style="padding:0.5rem;"><pre><span class="ann">@Autowired</span> <span class="kw">public void</span> <span class="fn">setRepo</span>(<span class="tp">UserRepository</span> r) { this.repo = r; }</pre></div></div>
+<ul><li>Optional deps</li><li>Mutable</li><li>Can cause NPE if called out of order</li></ul></div>
+<div class="compare-card good"><h4>✅ Constructor Injection</h4>
+<div class="code-block" style="margin:0.5rem 0;"><div class="code-body" style="padding:0.5rem;"><pre><span class="kw">private final</span> <span class="tp">UserRepository</span> repo;</pre></div></div>
+<ul><li>Explicit deps</li><li>Immutable</li><li>Easy mocking</li><li>Plain Java (no reflection)</li><li><strong>Spring team recommends</strong></li></ul></div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 @Autowired vs @Inject vs @Resource vs @Qualifier vs @Primary</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Annotation</th><th>Source</th><th>Resolution Strategy</th><th>When</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-blue">@Autowired</span></td><td>Spring</td><td>By type → @Qualifier → @Primary → param name</td><td>General Spring DI</td></tr>
+<tr><td><span class="badge badge-green">@Inject</span></td><td>Jakarta (JSR-330)</td><td>By type</td><td>Portable (non-Spring)</td></tr>
+<tr><td><span class="badge badge-yellow">@Resource</span></td><td>Jakarta (JSR-250)</td><td>By name first → by type</td><td>Legacy / JSF</td></tr>
+<tr><td><span class="badge badge-purple">@Qualifier</span></td><td>Spring</td><td>Narrow by specific bean name</td><td>Multiple beans same type</td></tr>
+<tr><td><span class="badge badge-cyan">@Primary</span></td><td>Spring</td><td>Default when multiple beans</td><td>Preferred bean</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🔧 Programmatic DI — @Bean + @Configuration</h3>
+<div class="code-block"><div class="code-header"><span>AppConfig.java</span><span>Manual bean wiring</span></div>
+<div class="code-body"><pre><span class="ann">@Configuration</span>
+<span class="kw">public class</span> <span class="tp">AppConfig</span> {
+    <span class="ann">@Bean</span>
+    <span class="hl-line"><span class="kw">public</span> <span class="tp">UserRepository</span> <span class="fn">userRepository</span>() {</span>
+        <span class="kw">return new</span> <span class="tp">JpaUserRepository</span>();
+    }
+
+    <span class="ann">@Bean</span>
+    <span class="hl-line"><span class="kw">public</span> <span class="tp">UserService</span> <span class="fn">userService</span>(<span class="tp">UserRepository</span> repo) { <span class="cm">// Explicit DI</span></span>
+        <span class="kw">return new</span> <span class="tp">UserService</span>(repo);
+    }
+}</pre></div></div>
+</div>
+</div>
+</section>
+
+<section class="section theme-purple" id="s03">
+<div class="section-header"><span class="num">03</span><h2>Spring Bean Lifecycle — Full Breakdown</h2></div>
+<div class="section-body">
+<div class="info-card card-interview"><div class="label">🎯 Senior Interview Essential</div><p>Know EVERY step from class loading to destruction. The lifecycle has 12 distinct phases.</p></div>
+
+<h3>🔄 Complete Lifecycle — 12 Phases</h3>
+<div class="flow-vertical">
+<div class="v-box b-blue"><strong>Phase 1</strong> — Constructor called (reflection instantiation)</div><div class="v-down">↓</div>
+<div class="v-box b-blue"><strong>Phase 2</strong> — Populate properties (DI injection — field/setter)</div><div class="v-down">↓</div>
+<div class="v-box b-purple"><strong>Phase 3</strong> — setBeanName() — BeanNameAware</div><div class="v-down">↓</div>
+<div class="v-box b-purple"><strong>Phase 4</strong> — setBeanClassLoader() — BeanClassLoaderAware</div><div class="v-down">↓</div>
+<div class="v-box b-purple"><strong>Phase 5</strong> — setBeanFactory() — BeanFactoryAware</div><div class="v-down">↓</div>
+<div class="v-box b-purple"><strong>Phase 6</strong> — setApplicationContext() — ApplicationContextAware</div><div class="v-down">↓</div>
+<div class="v-box b-yellow"><strong>Phase 7</strong> — BeanPostProcessor#postProcessBeforeInitialization</div><div class="v-down">↓</div>
+<div class="v-box b-green"><strong>Phase 8</strong> — @PostConstruct / InitializingBean#afterPropertiesSet / @Bean(initMethod)</div><div class="v-down">↓</div>
+<div class="v-box b-purple"><strong>Phase 9</strong> — BeanPostProcessor#postProcessAfterInitialization <span class="badge badge-red">← AOP PROXIES CREATED HERE</span></div><div class="v-down">↓</div>
+<div class="v-box b-green"><strong>Phase 10</strong> — 🎉 Bean is fully ready (proxied if AOP needed)</div><div class="v-down">↓ Container shutdown</div>
+<div class="v-box b-red"><strong>Phase 11</strong> — @PreDestroy / DisposableBean#destroy</div><div class="v-down">↓</div>
+<div class="v-box b-yellow"><strong>Phase 12</strong> — Custom destroy method (@Bean(destroyMethod))</div>
+</div>
+
+<div class="info-card card-internal"><div class="label">🔬 Critical — Phase 9 Timing</div><p><strong>AOP proxies are created in Phase 9</strong>, AFTER <code>@PostConstruct</code> (Phase 8). So inside <code>@PostConstruct</code>, <code>this</code> refers to the raw bean, not the proxy! Any <code>@Transactional</code> method called from <code>@PostConstruct</code> will NOT have transaction support.</p></div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📄 Full Lifecycle Demo</h3>
+<div class="code-block"><div class="code-header"><span>LifecycleDemoBean.java</span><span>All hooks demonstrated</span></div>
+<div class="code-body"><pre><span class="ann">@Component</span>
+<span class="kw">public class</span> <span class="tp">LifecycleDemoBean</span> <span class="kw">implements</span> <span class="tp">InitializingBean</span>, <span class="tp">DisposableBean</span> {
+
+    <span class="hl-line"><span class="kw">public</span> <span class="fn">LifecycleDemoBean</span>()  { <span class="fn">System.out</span>.<span class="fn">println</span>(<span class="str">"1. Constructor"</span>); }</span>
+
+    <span class="ann">@Override</span> <span class="hl-line"><span class="kw">public void</span> <span class="fn">setBeanName</span>(<span class="tp">String</span> n)          { <span class="fn">System.out</span>.<span class="fn">println</span>(<span class="str">"3. BeanNameAware: "</span>+n); }</span>
+    <span class="ann">@Override</span> <span class="hl-line"><span class="kw">public void</span> <span class="fn">setApplicationContext</span>(...)  { <span class="fn">System.out</span>.<span class="fn">println</span>(<span class="str">"6. ApplicationContextAware"</span>); }</span>
+
+    <span class="ann">@PostConstruct</span>
+    <span class="hl-line"><span class="kw">public void</span> <span class="fn">postConstruct</span>()                     { <span class="fn">System.out</span>.<span class="fn">println</span>(<span class="str">"8. @PostConstruct"</span>); }</span>
+
+    <span class="ann">@Override</span> <span class="hl-line"><span class="kw">public void</span> <span class="fn">afterPropertiesSet</span>()          { <span class="fn">System.out</span>.<span class="fn">println</span>(<span class="str">"8b. InitializingBean"</span>); }</span>
+
+    <span class="ann">@PreDestroy</span>
+    <span class="hl-line"><span class="kw">public void</span> <span class="fn">preDestroy</span>()                          { <span class="fn">System.out</span>.<span class="fn">println</span>(<span class="str">"11. @PreDestroy"</span>); }</span>
+}</pre></div></div>
+</div>
+
+<div class="sub-section"><h3>📋 Production Use Cases</h3>
+<div class="compare-grid">
+<div class="compare-card good"><h4>@PostConstruct</h4><ul><li>Cache preload</li><li>DB initialization (seed data)</li><li>Connection pool warmup</li><li>Load configs into memory</li></ul></div>
+<div class="compare-card good"><h4>@PreDestroy</h4><ul><li>Graceful resource cleanup</li><li>Flush pending writes</li><li>Stop background threads</li><li>Close sockets/connections</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section theme-yellow" id="s04">
+<div class="section-header"><span class="num">04</span><h2>Bean Scope &amp; Scoped Proxies</h2></div>
+<div class="section-body">
+<div class="sub-section"><h3>📊 Complete Scope Reference</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Scope</th><th>Instances</th><th>Lifetime</th><th>Thread-Safe?</th><th>Use Case</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-blue">singleton</span></td><td>1 per container</td><td>Entire app</td><td>✅<br>If stateless</td><td>Services, Repos</td></tr>
+<tr><td><span class="badge badge-green">prototype</span></td><td>New per request</td><td>Per injection</td><td>✅</td><td>Stateful beans</td></tr>
+<tr><td><span class="badge badge-purple">request</span></td><td>1 per HTTP req</td><td>HTTP request</td><td>✅</td><td>Controller state</td></tr>
+<tr><td><span class="badge badge-cyan">session</span></td><td>1 per HTTP session</td><td>User session</td><td>⚠️</td><td>User cart, prefs</td></tr>
+<tr><td><span class="badge badge-red">application</span></td><td>1 per ServletContext</td><td>App lifetime</td><td>⚠️</td><td>App-wide config</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="sub-section"><h3>⚠️ Scoped Proxy — Injecting Shorter Beans into Singletons</h3>
+<div class="code-block"><div class="code-header"><span>Request-scoped bean in singleton</span><span>proxyMode is critical</span></div>
+<div class="code-body"><pre><span class="ann">@Component</span>
+<span class="ann">@Scope</span>(<span class="kw">value</span> = <span class="tp">WebApplicationContext</span>.SCOPE_REQUEST,
+       <span class="hl-line"><span class="kw">proxyMode</span> = <span class="tp">ScopedProxyMode</span>.TARGET_PROXY)</span>
+<span class="kw">public class</span> <span class="tp">RequestScopedBean</span> { }
+
+<span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="tp">SingletonService</span> {
+    <span class="ann">@Autowired</span>
+    <span class="kw">private</span> <span class="tp">RequestScopedBean</span> bean; <span class="cm">// Actually a proxy!</span>
+}</pre></div></div>
+<div class="card-internal info-card"><div class="label">🔬 How It Works</div><p>Spring injects a <strong>proxy</strong> that delegates to the real bean on every method call. The proxy resolves the actual bean from the request context at runtime. Without <code>proxyMode</code>, you'd get an error or a stale reference.</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>⚠️ Singleton + Mutable State = Race Condition</h3>
+<div class="compare-grid">
+<div class="compare-card bad"><h4>❌ Dangerous — Mutable Singleton</h4>
+<div class="code-block" style="margin:0.5rem 0;"><div class="code-body" style="padding:0.5rem;"><pre><span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="tp">CounterService</span> {
+    <span class="hl-line-red"><span class="kw">private int</span> count = 0;</span>
+    <span class="kw">public void</span> <span class="fn">increment</span>() { count++; }
+}</pre></div></div>
+<p style="font-size:0.8rem;color:var(--red);">Thread 1 reads 0, writes 1. Thread 2 reads 0, writes 1. ❌ LOST UPDATE!</p></div>
+<div class="compare-card good"><h4>✅ Stateless — Thread-Safe</h4>
+<div class="code-block" style="margin:0.5rem 0;"><div class="code-body" style="padding:0.5rem;"><pre><span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="tp">UserService</span> {
+    <span class="kw">private final</span> <span class="tp">UserRepository</span> repo;
+    <span class="cm">// No mutable state → thread-safe by design</span>
+}</pre></div></div>
+<p style="font-size:0.8rem;color:var(--green);">Stateless = inherently thread-safe.</p></div>
+</div>
+<div class="card-interview info-card"><div class="label">🎯 Senior-Level Answer</div><p><strong>"Spring beans are singleton, but Spring itself is thread-safe because beans are expected to be stateless. Mutable state in singletons requires explicit synchronization."</strong></p></div>
+</div>
+</div>
+</section>
+
+<section class="section theme-purple" id="s05">
+<div class="section-header"><span class="num">05</span><h2>AOP — Aspect Oriented Programming Deep Dive</h2></div>
+<div class="section-body">
+<div class="card-internal info-card"><div class="label">🔬 Proxy Chain — How AOP Works</div>
+<p>Spring creates a <strong>chain of interceptors</strong>. Your method call goes through:</p>
+<div class="pipeline">
+<span class="pipe-item p-blue">Client call</span><span class="pipe-sep">→</span>
+<span class="pipe-item p-purple">JDK/CGLIB Proxy</span><span class="pipe-sep">→</span>
+<span class="pipe-item p-yellow">Aspect 1 (Logging)</span><span class="pipe-sep">→</span>
+<span class="pipe-item p-cyan">Aspect 2 (Security)</span><span class="pipe-sep">→</span>
+<span class="pipe-item p-green">Aspect 3 (Transaction)</span><span class="pipe-sep">→</span>
+<span class="pipe-item p-blue">Actual Method</span>
+</div>
+</div>
+
+<div class="sub-section"><h3>📐 Pointcut Expression Grammar</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Designator</th><th>Matches</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td><code>execution()</code></td><td>Method execution signature</td><td><code>execution(* com..*Service.*(..))</code></td></tr>
+<tr><td><code>within()</code></td><td>All methods in a type</td><td><code>within(com..controller.*)</code></td></tr>
+<tr><td><code>@annotation()</code></td><td>Annotated methods</td><td><code>@annotation(Transactional)</code></td></tr>
+<tr><td><code>@within()</code></td><td>Annotated types</td><td><code>@within(Service)</code></td></tr>
+<tr><td><code>args()</code></td><td>Methods with specific args</td><td><code>args(String, ..)</code></td></tr>
+<tr><td><code>bean()</code></td><td>Bean name pattern</td><td><code>bean(*Service)</code></td></tr>
+<tr><td><code>this()</code></td><td>Proxy implements type</td><td><code>this(UserService)</code></td></tr>
+<tr><td><code>target()</code></td><td>Target object of type</td><td><code>target(UserService)</code></td></tr>
+</tbody></table></div>
+<div class="code-block"><div class="code-header"><span>Composing pointcuts</span><span>&&, ||, ! operators</span></div>
+<div class="code-body"><pre><span class="ann">@Pointcut</span>(<span class="str">"execution(* com..service.*.*(..))"</span>)
+<span class="kw">public void</span> <span class="fn">serviceLayer</span>() {}
+
+<span class="ann">@Pointcut</span>(<span class="str">"@annotation(transactional)"</span>)
+<span class="kw">public void</span> <span class="fn">transactionalOp</span>(<span class="tp">Transactional</span> transactional) {}
+
+<span class="ann">@Around</span>(<span class="str">"serviceLayer() && transactionalOp(tx)"</span>) <span class="cm">// Combined match!</span>
+<span class="kw">public Object</span> <span class="fn">aroundService</span>(<span class="tp">ProceedingJoinPoint</span> pjp, <span class="tp">Transactional</span> tx) { }</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Advice Types — Full Comparison</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Advice</th><th>Timing</th><th>Access Return</th><th>Control</th><th>Use Case</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-blue">@Before</span></td><td>Before method</td><td>❌</td><td>Can throw to block</td><td>Logging, validation</td></tr>
+<tr><td><span class="badge badge-green">@AfterReturning</span></td><td>After success</td><td>✅ Can read/modify</td><td>Can change return</td><td>Audit, transform</td></tr>
+<tr><td><span class="badge badge-red">@AfterThrowing</span></td><td>After exception</td><td>❌</td><td>Can handle</td><td>Error tracking</td></tr>
+<tr><td><span class="badge badge-yellow">@After</span></td><td>Finally</td><td>❌</td><td>Cannot prevent</td><td>Cleanup</td></tr>
+<tr><td><span class="badge badge-purple">@Around</span></td><td>Wraps method</td><td>✅ Full control</td><td><strong>Can skip, retry, time, transform</strong></td><td>Transaction, Security</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🔄 Proxy Types — JDK vs CGLIB</h3>
+<div class="compare-grid">
+<div class="compare-card good"><h4>JDK Dynamic Proxy</h4>
+<p style="font-size:0.82rem;">Used when target <strong>implements an interface</strong>.</p>
+<ul><li>Uses <code>java.lang.reflect.Proxy</code></li><li>Proxies only interface methods</li><li>Faster startup</li></ul></div>
+<div class="compare-card good"><h4>CGLIB Proxy</h4>
+<p style="font-size:0.82rem;">Used when <strong>no interface</strong> exists. Spring Boot 2+ default.</p>
+<ul><li>Bytecode generation (subclass)</li><li>Cannot proxy <code>final</code> classes/methods</li><li><code>final</code> methods = no AOP!</li></ul></div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🚨 Self-Invocation — The #1 AOP Trap</h3>
+<div class="code-block"><div class="code-header"><span>Why @Transactional sometimes fails</span><span>Proxy bypass</span></div>
+<div class="code-body"><pre><span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="tp">PaymentService</span> {
+    <span class="hl-line-red"><span class="kw">public void</span> <span class="fn">processPayment</span>() {</span>
+        <span class="hl-line-red">    <span class="fn">updateLedger</span>(); <span class="cm">// this.updateLedger() — bypasses proxy!</span></span>
+    }
+
+    <span class="ann">@Transactional</span>
+    <span class="kw">public void</span> <span class="fn">updateLedger</span>() { }
+    <span class="cm">// Called from processPayment → NO transaction!</span>
+}</pre></div></div>
+<div class="card-best-practice info-card"><div class="label">💡 Solutions</div><ul>
+<li><strong>Self-inject:</strong> <code>@Autowired private PaymentService self;</code> then <code>self.updateLedger()</code></li>
+<li><strong>AopContext:</strong> <code>((PaymentService) AopContext.currentProxy()).updateLedger()</code> (requires <code>@EnableAspectJAutoProxy(exposeProxy=true)</code>)</li>
+<li><strong>Separate service:</strong> Extract <code>@Transactional</code> methods to a different <code>@Service</code></li>
+</ul></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Aspect Ordering</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Approach</th><th>Syntax</th><th>Behavior</th></tr></thead>
+<tbody>
+<tr><td>@Order(n) on aspect</td><td><code>@Order(1)</code> — lower = first</td><td>Wraps outer → inner → method → inner → outer</td></tr>
+<tr><td>Ordered interface</td><td><code>implements Ordered</code></td><td>Same as @Order</td></tr>
+<tr><td>No ordering</td><td>—</td><td>⚠️ Non-deterministic!</td></tr>
+</tbody></table></div>
+</div>
+</div>
+</section>
+
+<section class="section theme-red" id="s06">
+<div class="section-header"><span class="num">06</span><h2>@Transactional — Complete Reference</h2></div>
+<div class="section-body">
+<div class="card-internal info-card"><div class="label">🔬 Internal Flow</div>
+<div class="flow-vertical">
+<div class="v-box b-purple">TransactionInterceptor (Around advice) intercepts method</div><div class="v-down">↓</div>
+<div class="v-box b-blue">PlatformTransactionManager.getTransaction()</div><div class="v-down">↓</div>
+<div class="v-box b-green">Connection.setAutoCommit(false) → Begin transaction</div><div class="v-down">↓</div>
+<div class="v-box b-yellow">Execute your business method</div><div class="v-down">↓ success / ↓ RuntimeException</div>
+<div class="v-box b-green">Commit / Rollback</div><div class="v-down">↓</div>
+<div class="v-box b-yellow">Restore AutoCommit(true) → Release connection</div>
+</div>
+<p style="margin-top:0.75rem;"><strong>@Transactional is NOT magic.</strong> It is AOP + Proxy + TransactionManager. Nothing more.</p>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🔄 Rollback Rules <span class="badge badge-red">#1 Gotcha</span></h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Exception Type</th><th>Default</th><th>Why?</th><th>Override</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-red">RuntimeException</span></td><td>✅ Rollback</td><td>Unexpected error</td><td>—</td></tr>
+<tr><td><span class="badge badge-red">Error</span></td><td>✅ Rollback</td><td>JVM-level failure</td><td>—</td></tr>
+<tr><td><span class="badge badge-yellow">Checked Exception</span></td><td>❌ NO rollback</td><td>Expected by design</td><td><code>rollbackFor=Exception.class</code></td></tr>
+</tbody></table></div>
+<div class="code-block"><div class="code-header"><span>Common Mistake</span><span>Checked exception — no rollback!</span></div>
+<div class="code-body"><pre><span class="ann">@Transactional</span>
+<span class="kw">public void</span> <span class="fn">transfer</span>() <span class="kw">throws</span> <span class="tp">Exception</span> {
+    <span class="fn">debit</span>();
+    <span class="hl-line-red"><span class="kw">throw new</span> <span class="tp">Exception</span>(); <span class="cm">// Checked → NO rollback! Debit not rolled back!</span></span>
+}
+<span class="cm">// Fix:</span>
+<span class="ann">@Transactional</span>(<span class="hl-line-green">rollbackFor = <span class="tp">Exception</span>.<span class="kw">class</span></span>)</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📊 Isolation Levels — Explained with Examples</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Level</th><th>Dirty Read</th><th>Non-Repeatable</th><th>Phantom</th><th>Performance</th><th>DB Default</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-red">READ_UNCOMMITTED</span></td><td>⚠️ Allowed</td><td>⚠️</td><td>⚠️</td><td>Fastest</td><td>—</td></tr>
+<tr><td><span class="badge badge-blue">READ_COMMITTED</span></td><td>✅ Prevented</td><td>⚠️ Possible</td><td>⚠️ Possible</td><td>Good</td><td>Postgres, Oracle</td></tr>
+<tr><td><span class="badge badge-yellow">REPEATABLE_READ</span></td><td>✅</td><td>✅ Prevented</td><td>⚠️ Possible</td><td>Moderate</td><td>MySQL</td></tr>
+<tr><td><span class="badge badge-purple">SERIALIZABLE</span></td><td>✅</td><td>✅</td><td>✅ Prevented</td><td>Slowest ⚠️</td><td>—</td></tr>
+</tbody></table></div>
+<div class="card-interview info-card"><div class="label">🎯 Explain These</div>
+<p><strong>Dirty Read:</strong> Tx A reads uncommitted data from Tx B. If B rolls back, A read garbage.</p>
+<p><strong>Non-Repeatable Read:</strong> Tx A reads row twice, gets different values (Tx B modified &amp; committed).</p>
+<p><strong>Phantom Read:</strong> Tx A runs same query twice, gets different row count (Tx B inserted/deleted).</p>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Propagation — REQUIRES_NEW Pool Killer</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Propagation</th><th>Existing TX?</th><th>Behavior</th><th>⚠️ Risk</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-blue">REQUIRED</span></td><td>Y/N</td><td>Join / Create</td><td>Safe (default)</td></tr>
+<tr><td><span class="badge badge-green">REQUIRES_NEW</span></td><td>Y</td><td>Suspend current, create NEW</td><td><span class="badge badge-red">Pool exhaustion!</span></td></tr>
+<tr><td><span class="badge badge-purple">NESTED</span></td><td>Y</td><td>JDBC savepoint</td><td>Only JDBC, not JTA</td></tr>
+<tr><td><span class="badge badge-yellow">SUPPORTS</span></td><td>Y/N</td><td>Join / Run without</td><td>Optional</td></tr>
+<tr><td><span class="badge badge-cyan">MANDATORY</span></td><td>Must exist</td><td>Throw if not</td><td>Enforcement</td></tr>
+<tr><td><span class="badge badge-red">NEVER</span></td><td>Must NOT exist</td><td>Throw if TX</td><td>Enforcement</td></tr>
+<tr><td><span class="badge badge-red">NOT_SUPPORTED</span></td><td>Y</td><td>Suspend TX</td><td>For non-TX work</td></tr>
+</tbody></table></div>
+<div class="card-production info-card"><div class="label">⚠️ REQUIRES_NEW = +1 Connection</div>
+<p>Each <code>REQUIRES_NEW</code> grabs a separate DB connection. With 10 threads × 2 connections = 20 total. Pool size 10 → <strong>deadlock</strong>.</p>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🧪 TransactionTemplate — Programmatic Control</h3>
+<div class="code-block"><div class="code-header"><span>TransactionTemplate</span><span>When annotations fail</span></div>
+<div class="code-body"><pre><span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="tp">PaymentService</span> {
+    <span class="kw">private final</span> <span class="tp">TransactionTemplate</span> txTemplate;
+
+    <span class="kw">public void</span> <span class="fn">process</span>() {
+        <span class="hl-line"><span class="tp">User</span> result = txTemplate.<span class="fn">execute</span>(status -> {</span>
+            <span class="cm">// Full control — commit, rollback, or return value</span>
+            <span class="kw">return</span> <span class="fn">saveUser</span>();
+        });
+    }
+}</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>⚠️ Long Transaction = Production Disaster</h3>
+<div class="compare-grid">
+<div class="compare-card bad"><h4>❌ BAD</h4>
+<div class="code-block" style="margin:0.5rem 0;"><div class="code-body" style="padding:0.5rem;"><pre><span class="ann">@Transactional</span>
+<span class="kw">public void</span> <span class="fn">processPayment</span>() {
+    <span class="hl-line-red"><span class="fn">callExternalAPI</span>(); <span class="cm">// 3s HTTP call inside TX!</span></span>
+    <span class="fn">saveData</span>();
+}</pre></div></div>
+<ul><li>Connection held for 3+ seconds</li><li>Pool exhaustion</li><li>DB lock contention</li></ul></div>
+<div class="compare-card good"><h4>✅ GOOD</h4>
+<div class="code-block" style="margin:0.5rem 0;"><div class="code-body" style="padding:0.5rem;"><pre><span class="kw">public void</span> <span class="fn">processPayment</span>() {
+    <span class="fn">callExternalAPI</span>(); <span class="cm">// No TX</span>
+    <span class="fn">saveData</span>(); <span class="cm">// Only this is @Transactional</span>
+}</pre></div></div>
+<p style="font-size:0.8rem;color:var(--green);"><strong>"Keep transaction boundary SMALL."</strong> — Senior-level answer.</p></div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 readOnly=true — Optimizations</h3>
+<div class="code-block"><div class="code-header"><span>@Transactional(readOnly = true)</span><span>Performance hint</span></div>
+<div class="code-body"><pre><span class="ann">@Transactional</span>(<span class="hl-line">readOnly = <span class="kw">true</span></span>)
+<span class="kw">public</span> <span class="tp">User</span> <span class="fn">findById</span>(<span class="tp">Long</span> id) { <span class="kw">return</span> repo.<span class="fn">findById</span>(id).<span class="fn">orElseThrow</span>(); }</pre></div></div>
+<p><strong>What it actually does:</strong> Sets <code>FlushMode.NEVER</code> on Hibernate session → skips dirty checking. Hints JDBC driver. <span class="badge badge-yellow">Does NOT prevent writes.</span></p>
+</div>
+</div>
+</section>
+
+<section class="section theme-cyan" id="s07">
+<div class="section-header"><span class="num">07</span><h2>Spring Boot Auto-Configuration Internals</h2></div>
+<div class="section-body">
+<div class="card-interview info-card"><div class="label">🎯 #1 Concept Interviewers Love</div><p>Many use Spring Boot daily but can't explain auto-configuration. This is the most probed senior-level topic.</p></div>
+
+<div class="sub-section"><h3>⚙️ How It Works — Full Flow</h3>
+<div class="flow-vertical">
+<div class="v-box b-blue">@SpringBootApplication = @Configuration + @EnableAutoConfiguration + @ComponentScan</div><div class="v-down">↓</div>
+<div class="v-box b-purple">@EnableAutoConfiguration triggers SpringFactoriesLoader</div><div class="v-down">↓ reads</div>
+<div class="v-box b-yellow">META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</div><div class="v-down">↓ loads 130+ classes</div>
+<div class="v-box b-green">@Conditional* annotations filter which configs apply</div><div class="v-down">↓</div>
+<div class="v-box b-blue">Selected beans are created with properties from application.yml</div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 @Conditional Hierarchy (9 Types)</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Annotation</th><th>Condition</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td><code>@ConditionalOnClass</code></td><td>Class exists on classpath</td><td><code>@ConditionalOnClass(DataSource.class)</code></td></tr>
+<tr><td><code>@ConditionalOnMissingClass</code></td><td>Class NOT on classpath</td><td><code>@ConditionalOnMissingClass("com.mysql.Driver")</code></td></tr>
+<tr><td><code>@ConditionalOnBean</code></td><td>Bean already defined</td><td><code>@ConditionalOnBean(JdbcTemplate.class)</code></td></tr>
+<tr><td><code>@ConditionalOnMissingBean</code></td><td>Bean NOT defined yet</td><td><code>@ConditionalOnMissingBean(DataSource.class)</code></td></tr>
+<tr><td><code>@ConditionalOnProperty</code></td><td>Property has value</td><td><code>@ConditionalOnProperty("spring.datasource.url")</code></td></tr>
+<tr><td><code>@ConditionalOnExpression</code></td><td>SpEL expression</td><td><code>@ConditionalOnExpression("${my.feature:true}")</code></td></tr>
+<tr><td><code>@ConditionalOnResource</code></td><td>Resource exists</td><td><code>@ConditionalOnResource(classpath:data.sql)</code></td></tr>
+<tr><td><code>@ConditionalOnJava</code></td><td>Java version range</td><td><code>@ConditionalOnJava(JavaVersion.EIGHT)</code></td></tr>
+<tr><td><code>@ConditionalOnCloudPlatform</code></td><td>Cloud platform</td><td><code>@ConditionalOnCloudPlatform(CloudPlatform.HEROKU)</code></td></tr>
+</tbody></table></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🔍 Example — DataSourceAutoConfiguration</h3>
+<div class="code-block"><div class="code-header"><span>AutoConfiguration.imports (Spring Boot 3.x)</span><span>File location</span></div>
+<div class="code-body"><pre>org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration</pre></div></div>
+<div class="code-block"><div class="code-header"><span>DataSourceAutoConfiguration.java</span></div>
+<div class="code-body"><pre><span class="ann">@AutoConfiguration</span>
+<span class="ann">@ConditionalOnClass</span>({ <span class="tp">DataSource</span>.<span class="kw">class</span>, <span class="tp">EmbeddedDatabaseType</span>.<span class="kw">class</span> })
+<span class="ann">@ConditionalOnMissingBean</span>(<span class="tp">DataSource</span>.<span class="kw">class</span>)
+<span class="ann">@EnableConfigurationProperties</span>(<span class="tp">DataSourceProperties</span>.<span class="kw">class</span>)
+<span class="kw">public class</span> <span class="tp">DataSourceAutoConfiguration</span> {
+    <span class="ann">@Bean</span>
+    <span class="ann">@ConditionalOnMissingBean</span>
+    <span class="kw">public</span> <span class="tp">DataSource</span> <span class="fn">dataSource</span>() {
+        <span class="cm">// DataSource on classpath AND no user-defined bean → auto-create</span>
+        <span class="kw">return</span> dataSourceProperties.<span class="fn">initializeDataSourceBuilder</span>().<span class="fn">build</span>();
+    }
+}</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>⚠️ Gotcha: @ConditionalOnBean on @Configuration</h3>
+<div class="card-common-mistake info-card"><div class="label">🚨 Ordering Issue</div><p><code>@ConditionalOnBean</code> on a <code>@Configuration</code> class checks the BeanFactory at the time the config is processed — which may be <strong>before</strong> the bean is registered. Use <code>@AutoConfigureAfter</code> / <code>@AutoConfigureBefore</code> to control ordering, or put <code>@ConditionalOnMissingBean</code> on the <code>@Bean</code> method instead.</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Auto-Configuration Ordering</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Annotation</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td><code>@AutoConfigureOrder</code></td><td>Set explicit numeric order</td></tr>
+<tr><td><code>@AutoConfigureBefore</code></td><td>Run before specified configs</td></tr>
+<tr><td><code>@AutoConfigureAfter</code></td><td>Run after specified configs</td></tr>
+</tbody></table></div>
+</div>
+</div>
+</section>
+
+<section class="section theme-blue" id="s08">
+<div class="section-header"><span class="num">08</span><h2>DispatcherServlet — Request Lifecycle</h2></div>
+<div class="section-body">
+<div class="card-interview info-card"><div class="label">🎯 Almost Guaranteed</div><p>DispatcherServlet is the central controller of Spring MVC. Every HTTP request funnels through this single entry point.</p></div>
+
+<h3>📡 Request Lifecycle — 8 Steps</h3>
+<div class="flow-vertical">
+<div class="v-box b-red"><strong>1. HTTP Request</strong><br><span style="font-size:0.7rem;color:var(--gray-500);">GET /api/users/1</span></div><div class="v-down">↓</div>
+<div class="v-box b-blue"><strong>2. DispatcherServlet</strong><br><span style="font-size:0.7rem;color:var(--gray-500);">Front Controller — central entry point</span></div><div class="v-down">↓ asks</div>
+<div class="v-box b-purple"><strong>3. HandlerMapping</strong><br><span style="font-size:0.7rem;color:var(--gray-500);">Which controller handles this URL/path?</span></div><div class="v-down">↓ returns HandlerExecutionChain</div>
+<div class="v-box b-yellow"><strong>4. Interceptors (preHandle)</strong><br><span style="font-size:0.7rem;color:var(--gray-500);">Security, logging, rate limiting, CORS</span></div><div class="v-down">↓</div>
+<div class="v-box b-green"><strong>5. HandlerAdapter</strong><br><span style="font-size:0.7rem;color:var(--gray-500);">Executes controller method, handles params, validation</span></div><div class="v-down">↓</div>
+<div class="v-box b-blue"><strong>6. Controller Method</strong><br><span style="font-size:0.7rem;color:var(--gray-500);">@GetMapping → returns ResponseEntity / ModelAndView</span></div><div class="v-down">↓</div>
+<div class="v-box b-purple"><strong>7. Interceptors (postHandle / afterCompletion)</strong><br><span style="font-size:0.7rem;color:var(--gray-500);">Post-processing, cleanup</span></div><div class="v-down">↓</div>
+<div class="v-box b-green"><strong>8. HTTP Response</strong><br><span style="font-size:0.7rem;color:var(--gray-500);">JSON / XML / View rendered</span></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Key Interfaces</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Interface</th><th>Responsibility</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-blue">HandlerMapping</span></td><td>Maps URL → controller: <code>RequestMappingHandlerMapping</code>, <code>SimpleUrlHandlerMapping</code></td></tr>
+<tr><td><span class="badge badge-green">HandlerAdapter</span></td><td>Executes controller: param binding, validation, return value processing</td></tr>
+<tr><td><span class="badge badge-purple">HandlerInterceptor</span></td><td>Pre/post processing — like servlet filter, but scoped to Spring controllers</td></tr>
+<tr><td><span class="badge badge-yellow">ViewResolver</span></td><td>Resolves view name → JSP, Thymeleaf, Freemarker</td></tr>
+<tr><td><span class="badge badge-cyan">HttpMessageConverter</span></td><td>HTTP body ↔ Java: Jackson, Gson, Protobuf</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Custom Interceptor</h3>
+<div class="code-block"><div class="code-header"><span>HandlerInterceptor</span><span>Three lifecycle hooks</span></div>
+<div class="code-body"><pre><span class="ann">@Component</span>
+<span class="kw">public class</span> <span class="tp">RequestTimerInterceptor</span> <span class="kw">implements</span> <span class="tp">HandlerInterceptor</span> {
+    <span class="hl-line"><span class="kw">public boolean</span> <span class="fn">preHandle</span>(...) {                    <span class="cm">// Before controller</span></span>
+        request.<span class="fn">setAttribute</span>(<span class="str">"startTime"</span>, <span class="tp">System</span>.<span class="fn">currentTimeMillis</span>());
+        <span class="kw">return true</span>; <span class="cm">// false = block request</span>
+    }
+    <span class="hl-line"><span class="kw">public void</span> <span class="fn">postHandle</span>(...) {                     <span class="cm">// After controller, before view</span></span>
+        <span class="cm">// Can modify ModelAndView here</span>
+    }
+    <span class="hl-line"><span class="kw">public void</span> <span class="fn">afterCompletion</span>(...) {                <span class="cm">// After complete response</span></span>
+        <span class="kw">long</span> duration = <span class="tp">System</span>.<span class="fn">currentTimeMillis</span>() - (<span class="kw">long</span>) request.<span class="fn">getAttribute</span>(<span class="str">"startTime"</span>);
+        <span class="fn">log.info</span>(<span class="str">"Request took {}ms"</span>, duration);
+    }
+}</pre></div></div>
+</div>
+
+<div class="card-key-takeaway info-card"><div class="label">💡 Why Front Controller Pattern?</div><p>Centralized: logging · auth · authorization · exception handling · request processing. Think airport manager routing every passenger.</p></div>
+</div>
+</section>
+
+<section class="section theme-green" id="s09">
+<div class="section-header"><span class="num">09</span><h2>REST API — Production Best Practices</h2></div>
+<div class="section-body">
+<div class="sub-section"><h3>📋 HTTP Methods</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Method</th><th>CRUD</th><th>Idempotent</th><th>Safe</th><th>Body</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-blue">GET</span></td><td>Read</td><td>✅</td><td>✅</td><td>❌</td></tr>
+<tr><td><span class="badge badge-green">POST</span></td><td>Create</td><td>❌</td><td>❌</td><td>✅</td></tr>
+<tr><td><span class="badge badge-yellow">PUT</span></td><td>Replace</td><td>✅</td><td>❌</td><td>✅</td></tr>
+<tr><td><span class="badge badge-purple">PATCH</span></td><td>Partial</td><td>⚠️ Usually not</td><td>❌</td><td>✅</td></tr>
+<tr><td><span class="badge badge-red">DELETE</span></td><td>Delete</td><td>✅ Usually</td><td>❌</td><td>❌</td></tr>
+<tr><td><span class="badge badge-cyan">HEAD</span></td><td>Headers only</td><td>✅</td><td>✅</td><td>❌</td></tr>
+<tr><td><span class="badge badge-cyan">OPTIONS</span></td><td>Available methods</td><td>✅</td><td>✅</td><td>❌</td></tr>
+</tbody></table></div>
+<div class="card-interview info-card"><div class="label">🎯 Idempotency</div>
+<p><strong>Idempotent:</strong> Multiple identical requests produce the same server state.</p>
+<p><code>DELETE /users/1</code> — 1st call: deleted. 2nd call: still deleted. ✅<br>
+<code>POST /orders</code> — 1st call: order #1. 2nd call: order #2. ❌</p>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 HTTP Status Codes — Use Correctly</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Code</th><th>Meaning</th><th>When</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-green">200</span></td><td>OK</td><td>GET, PUT, PATCH success</td></tr>
+<tr><td><span class="badge badge-green">201</span></td><td>Created</td><td>POST — new resource</td></tr>
+<tr><td><span class="badge badge-yellow">204</span></td><td>No Content</td><td>DELETE, void responses</td></tr>
+<tr><td><span class="badge badge-red">400</span></td><td>Bad Request</td><td>Validation errors</td></tr>
+<tr><td><span class="badge badge-red">401</span></td><td>Unauthorized</td><td>Invalid/missing auth</td></tr>
+<tr><td><span class="badge badge-red">403</span></td><td>Forbidden</td><td>No permission</td></tr>
+<tr><td><span class="badge badge-yellow">404</span></td><td>Not Found</td><td>Resource missing</td></tr>
+<tr><td><span class="badge badge-yellow">409</span></td><td>Conflict</td><td>Duplicate / version conflict</td></tr>
+<tr><td><span class="badge badge-purple">422</span></td><td>Unprocessable</td><td>Business rule fail</td></tr>
+<tr><td><span class="badge badge-red">429</span></td><td>Too Many Requests</td><td>Rate limited</td></tr>
+<tr><td><span class="badge badge-red">500</span></td><td>Internal Server Error</td><td>Unexpected</td></tr>
+<tr><td><span class="badge badge-red">503</span></td><td>Service Unavailable</td><td>Maintenance</td></tr>
+</tbody></table></div>
+<div class="card-best-practice info-card"><div class="label">💡 Senior Interview Point</div><p><strong>Never return 200 OK for everything.</strong> Use proper status codes. Interviewers dislike generic 200 responses.</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📌 Pagination — Never <code>findAll()</code></h3>
+<div class="compare-grid">
+<div class="compare-card bad"><h4>❌ BAD</h4><div class="code-block" style="margin:0.5rem 0;"><div class="code-body" style="padding:0.5rem;"><pre><span class="fn">findAll</span>() <span class="cm">// Loads all rows!</span></pre></div></div><ul><li>Memory issue</li><li>Slow queries</li><li>Network overload</li></ul></div>
+<div class="compare-card good"><h4>✅ GOOD</h4><div class="code-block" style="margin:0.5rem 0;"><div class="code-body" style="padding:0.5rem;"><pre><span class="tp">Pageable</span> p = <span class="tp">PageRequest</span>.<span class="fn">of</span>(0, 20);<br><span class="tp">Page</span>&lt;<span class="tp">User</span>&gt; page = repo.<span class="fn">findAll</span>(p);</pre></div></div><ul><li>Efficient</li><li>Scalable</li><li>Total count included</li></ul></div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📌 API Versioning</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Strategy</th><th>Example</th><th>Pros</th><th>Cons</th></tr></thead>
+<tbody>
+<tr><td>URI Path</td><td><code>/api/v1/users</code></td><td>Simple, explicit</td><td>Code duplication</td></tr>
+<tr><td>Header</td><td><code>Accept: vnd.example.v1+json</code></td><td>Clean URLs</td><td>Harder to test</td></tr>
+<tr><td>Query param</td><td><code>/api/users?version=1</code></td><td>Easy to change</td><td>Caching issues</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📌 Content Negotiation</h3>
+<div class="code-block"><div class="code-header"><span>Content negotiation</span><span>Accept header vs extensions</span></div>
+<div class="code-body"><pre>GET /api/users/1
+Accept: application/json    <span class="cm">// → JSON (preferred)</span>
+
+GET /api/users/1.xml         <span class="cm">// → XML (extension-based)</span>
+
+GET /api/users/1?format=json <span class="cm">// → JSON (param-based)</span>
+
+<span class="cm">// Spring Boot config:</span>
+spring.mvc.contentnegotiation.favor-parameter=false
+spring.mvc.contentnegotiation.favor-path-extension=false</pre></div></div>
+</div>
+</div>
+</section>
+
+<section class="section theme-red" id="s10">
+<div class="section-header"><span class="num">10</span><h2>Exception Handling — Production Patterns</h2></div>
+<div class="section-body">
+<div class="card-common-mistake info-card"><div class="label">❌ Bad Practice</div><div class="code-block" style="margin:0.5rem 0;"><div class="code-body" style="padding:0.5rem;"><pre><span class="kw">try</span> { <span class="fn">process</span>(); } <span class="kw">catch</span> (<span class="tp">Exception</span> e) { }</pre></div></div><p>Empty catch = swallowed exception = debugging nightmare.</p></div>
+
+<div class="sub-section"><h3>✅ Global @RestControllerAdvice</h3>
+<div class="code-block"><div class="code-header"><span>GlobalExceptionHandler.java</span><span>Centralized error handling</span></div>
+<div class="code-body"><pre><span class="ann">@RestControllerAdvice</span>
+<span class="kw">public class</span> <span class="tp">GlobalExceptionHandler</span> {
+
+    <span class="ann">@ExceptionHandler</span>(<span class="tp">UserNotFoundException</span>.<span class="kw">class</span>)
+    <span class="kw">public</span> <span class="tp">ResponseEntity</span>&lt;<span class="tp">ErrorResponse</span>&gt; <span class="fn">handleNotFound</span>(...) {
+        <span class="kw">return</span> <span class="tp">ResponseEntity</span>.<span class="fn">status</span>(404)
+            .<span class="fn">body</span>(<span class="kw">new</span> <span class="tp">ErrorResponse</span>(<span class="str">"USER_404"</span>, <span class="str">"User not found"</span>));
+    }
+
+    <span class="ann">@ExceptionHandler</span>(<span class="tp">MethodArgumentNotValidException</span>.<span class="kw">class</span>)
+    <span class="kw">public</span> <span class="tp">ResponseEntity</span>&lt;?&gt; <span class="fn">handleValidation</span>(...) {
+        <span class="hl-line"><span class="tp">List</span>&lt;<span class="tp">FieldError</span>&gt; errors = ex.<span class="fn">getBindingResult</span>().<span class="fn">getFieldErrors</span>();</span>
+        <span class="kw">return</span> <span class="tp">ResponseEntity</span>.<span class="fn">badRequest</span>().<span class="fn">body</span>(errors);
+    }
+
+    <span class="ann">@ExceptionHandler</span>(<span class="tp">Exception</span>.<span class="kw">class</span>) <span class="cm">// Catch-all</span>
+    <span class="kw">public</span> <span class="tp">ResponseEntity</span>&lt;?&gt; <span class="fn">handleGeneral</span>(...) {
+        <span class="fn">log.error</span>(<span class="str">"Unexpected error"</span>, ex); <span class="cm">// ALWAYS log!</span>
+        <span class="kw">return</span> <span class="tp">ResponseEntity</span>.<span class="fn">status</span>(500)
+            .<span class="fn">body</span>(<span class="kw">new</span> <span class="tp">ErrorResponse</span>(<span class="str">"INT_500"</span>, <span class="str">"Internal error"</span>));
+    }
+}</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 ResponseEntityExceptionHandler — Spring's Base</h3>
+<div class="code-block"><div class="code-header"><span>Extended Handler</span><span>Override Spring MVC defaults</span></div>
+<div class="code-body"><pre><span class="ann">@RestControllerAdvice</span>
+<span class="kw">public class</span> <span class="tp">ExtendedHandler</span> <span class="kw">extends</span> <span class="tp">ResponseEntityExceptionHandler</span> {
+    <span class="ann">@Override</span>
+    <span class="kw">protected</span> <span class="tp">ResponseEntity</span>&lt;?&gt; <span class="fn">handleHttpMessageNotReadable</span>(...) {
+        <span class="kw">return</span> <span class="tp">ResponseEntity</span>.<span class="fn">badRequest</span>()
+            .<span class="fn">body</span>(<span class="kw">new</span> <span class="tp">ErrorResponse</span>(<span class="str">"INVALID_JSON"</span>, <span class="str">"Malformed JSON body"</span>));
+    }
+    <span class="cm">// Override handleMethodArgumentNotValid, handleHttpMediaType, etc.</span>
+}</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 RFC 7807 Problem Details (Spring Boot 3+)</h3>
+<p>Enable standardized error responses:</p>
+<div class="code-block"><div class="code-header"><span>application.yml</span><span>One property enables RFC 7807</span></div>
+<div class="code-body"><pre>spring.mvc.problemdetails.enabled=true</pre></div></div>
+<div class="code-block"><div class="code-header"><span>Standard response format</span></div>
+<div class="code-body"><pre>{
+  <span class="str">"type"</span>: <span class="str">"https://api.example.com/errors/user-not-found"</span>,
+  <span class="str">"title"</span>: <span class="str">"User Not Found"</span>,
+  <span class="str">"status"</span>: 404,
+  <span class="str">"detail"</span>: <span class="str">"User with ID 123 not found"</span>,
+  <span class="str">"instance"</span>: <span class="str">"/api/users/123"</span>
+}</pre></div></div>
+</div>
+
+<div class="card-production info-card"><div class="label">⚠️ Production Rules</div><p><strong>Never expose:</strong> stack traces · SQL queries · internal class names · file paths</p><p><strong>Always include:</strong> error code · readable message · timestamp · correlation ID (for debugging)</p></div>
+</div>
+</section>
+
+<section class="section theme-yellow" id="s11">
+<div class="section-header"><span class="num">11</span><h2>Validation — JSR-380 Bean Validation</h2></div>
+<div class="section-body">
+<div class="card-key-takeaway info-card"><div class="label">💡 Never Trust Client Input</div><p>Client-side validation is for UX only. Server-side validation is a <strong>security requirement</strong>.</p></div>
+
+<div class="sub-section"><h3>📄 DTO with Annotations</h3>
+<div class="code-block"><div class="code-header"><span>UserRequest.java</span><span>Common constraints</span></div>
+<div class="code-body"><pre><span class="kw">public class</span> <span class="tp">UserRequest</span> {
+    <span class="ann">@NotBlank</span>(message = <span class="str">"Name is required"</span>)
+    <span class="kw">private</span> <span class="tp">String</span> name;
+
+    <span class="ann">@Email</span>
+    <span class="kw">private</span> <span class="tp">String</span> email;
+
+    <span class="ann">@Size</span>(min = 8, max = 50)
+    <span class="kw">private</span> <span class="tp">String</span> password;
+
+    <span class="ann">@Min</span>(18) <span class="ann">@Max</span>(150)
+    <span class="kw">private int</span> age;
+
+    <span class="ann">@Pattern</span>(regexp = <span class="str">"^\\+?[1-9]\\d{1,14}$"</span>)
+    <span class="kw">private</span> <span class="tp">String</span> phone;
+}</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🎮 Controller with @Valid</h3>
+<div class="code-block"><div class="code-header"><span>@Valid triggers validation automatically</span></div>
+<div class="code-body"><pre><span class="ann">@PostMapping</span>
+<span class="kw">public</span> <span class="tp">ResponseEntity</span>&lt;<span class="tp">User</span>&gt; <span class="fn">create</span>(<span class="ann">@Valid</span> <span class="ann">@RequestBody</span> <span class="tp">UserRequest</span> req) {
+    <span class="cm">// If validation fails → MethodArgumentNotValidException is thrown</span>
+    <span class="cm">// Your @RestControllerAdvice catches it → returns 400 Bad Request</span>
+    <span class="kw">return</span> <span class="tp">ResponseEntity</span>.<span class="fn">status</span>(201).<span class="fn">body</span>(service.<span class="fn">create</span>(req));
+}
+<span class="cm">// For path/param validation, add @Validated at class level:</span>
+<span class="ann">@Validated</span>
+<span class="ann">@RestController</span>
+<span class="kw">public class</span> <span class="tp">UserController</span> { }</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Custom Cross-Field Validator</h3>
+<div class="code-block"><div class="code-header"><span>@PasswordMatch annotation</span><span>Class-level validation</span></div>
+<div class="code-body"><pre><span class="ann">@Target</span>({ <span class="tp">ElementType</span>.TYPE })
+<span class="ann">@Retention</span>(<span class="tp">RetentionPolicy</span>.RUNTIME)
+<span class="ann">@Constraint</span>(validatedBy = <span class="tp">PasswordMatchValidator</span>.<span class="kw">class</span>)
+<span class="kw">public</span> <span class="ann">@interface</span> <span class="tp">PasswordMatch</span> {
+    <span class="tp">String</span> <span class="fn">message</span>() <span class="kw">default</span> <span class="str">"Passwords don't match"</span>;
+    <span class="tp">Class</span>&lt;?&gt;[] <span class="fn">groups</span>() <span class="kw">default</span> {};
+    <span class="tp">Class</span>&lt;? <span class="kw">extends</span> <span class="tp">Payload</span>&gt;[] <span class="fn">payload</span>() <span class="kw">default</span> {};
+}
+
+<span class="kw">public class</span> <span class="tp">PasswordMatchValidator</span> <span class="kw">implements</span> <span class="tp">ConstraintValidator</span>&lt;<span class="tp">PasswordMatch</span>, <span class="tp">RegisterRequest</span>&gt; {
+    <span class="hl-line"><span class="kw">public boolean</span> <span class="fn">isValid</span>(<span class="tp">RegisterRequest</span> req, <span class="tp">ConstraintValidatorContext</span> ctx) {</span>
+        <span class="kw">return</span> req.<span class="fn">getPassword</span>().<span class="fn">equals</span>(req.<span class="fn">getConfirmPassword</span>());
+    }
+}
+
+<span class="ann">@PasswordMatch</span> <span class="cm">// ← Class-level!</span>
+<span class="kw">public class</span> <span class="tp">RegisterRequest</span> {
+    <span class="ann">@NotBlank</span> <span class="kw">private</span> <span class="tp">String</span> password;
+    <span class="ann">@NotBlank</span> <span class="kw">private</span> <span class="tp">String</span> confirmPassword;
+}</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Validation Groups</h3>
+<div class="code-block"><div class="code-header"><span>Different validation per operation</span></div>
+<div class="code-body"><pre><span class="kw">public interface</span> <span class="tp">OnCreate</span> {}
+<span class="kw">public interface</span> <span class="tp">OnUpdate</span> {}
+
+<span class="kw">public class</span> <span class="tp">UserRequest</span> {
+    <span class="ann">@Null</span>(groups = <span class="tp">OnCreate</span>.<span class="kw">class</span>)
+    <span class="ann">@NotNull</span>(groups = <span class="tp">OnUpdate</span>.<span class="kw">class</span>)
+    <span class="kw">private</span> <span class="tp">Long</span> id;
+}
+
+<span class="cm">// Usage:</span>
+<span class="ann">@Validated</span>(<span class="tp">OnCreate</span>.<span class="kw">class</span>) <span class="ann">@RequestBody</span> <span class="tp">UserRequest</span> req</pre></div></div>
+</div>
+
+<div class="card-internal info-card"><div class="label">🔬 Under The Hood</div><p>Spring uses <strong>Hibernate Validator</strong> (JSR-380 reference implementation). <code>@Valid</code> triggers <code>Validator#validate()</code>. Errors collected in <code>BindingResult</code> or thrown as <code>MethodArgumentNotValidException</code>.</p></div>
+</div>
+</section>
+
+<section class="section theme-purple" id="s12">
+<div class="section-header"><span class="num">12</span><h2>JPA / Hibernate — Deep Understanding</h2></div>
+<div class="section-body">
+<div class="sub-section"><h3>📊 JPA vs Hibernate</h3>
+<div class="compare-grid">
+<div class="compare-card good"><h4>JPA (javax.persistence)</h4><p style="font-size:0.82rem;">Specification — defines interfaces and rules</p><div class="tag-list"><span class="tag tag-t2">Interface</span><span class="tag tag-t5">Standard</span></div></div>
+<div class="compare-card good"><h4>Hibernate (org.hibernate)</h4><p style="font-size:0.82rem;">Implementation — actual ORM</p><div class="tag-list"><span class="tag tag-t1">Implementation</span><span class="tag tag-t4">ORM</span></div></div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🔄 Entity Lifecycle — 4 States</h3>
+<div class="flow-vertical">
+<div class="v-box b-blue"><strong>TRANSIENT</strong><br><span style="font-size:0.7rem;">new User() — not tracked by Hibernate</span></div><div class="v-down">↓ persist()</div>
+<div class="v-box b-green"><strong>PERSISTENT</strong><br><span style="font-size:0.7rem;">Managed by session — changes auto-tracked</span></div><div class="v-down">↓ close() / clear()</div>
+<div class="v-box b-yellow"><strong>DETACHED</strong><br><span style="font-size:0.7rem;">Previously managed, session closed</span></div><div class="v-down">↓ remove()</div>
+<div class="v-box b-red"><strong>REMOVED</strong><br><span style="font-size:0.7rem;">Marked for deletion on flush</span></div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>💾 Persistence Context = 1st Level Cache</h3>
+<div class="card-internal info-card"><div class="label">🔬 Internal — How It Works</div>
+<div class="code-block" style="margin:0.5rem 0;"><div class="code-body" style="padding:0.5rem;"><pre><span class="tp">User</span> u1 = repo.<span class="fn">findById</span>(1L);
+<span class="tp">User</span> u2 = repo.<span class="fn">findById</span>(1L);
+<span class="cm">// Only ONE SQL query!</span>
+<span class="cm">// Second fetch from Persistence Context (1st level cache)</span></pre></div></div>
+<p><strong>Dirty Checking:</strong> Hibernate stores original snapshot. At flush/commit: compare old vs new → generate SQL UPDATE automatically.</p>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>⚠️ N+1 Query Problem <span class="badge badge-red">Huge Performance Issue</span></h3>
+<div class="code-block"><div class="code-header"><span>The problem</span><span>1 query for entities + N for relations</span></div>
+<div class="code-body"><pre><span class="tp">List</span>&lt;<span class="tp">User</span>&gt; users = userRepo.<span class="fn">findAll</span>();
+<span class="kw">for</span> (<span class="tp">User</span> u : users) {
+    <span class="hl-line-red">u.<span class="fn">getOrders</span>(); <span class="cm">// N additional queries!</span></span>
+}
+<span class="cm">// Total: 1 (users) + N (orders per user) = N+1 queries!</span></pre></div></div>
+<div class="card-interview info-card"><div class="label">🎯 Senior-Level Answer</div><p><strong>"N+1 is NOT a database problem. It is an ORM fetching strategy problem."</strong></p></div>
+<h4>✅ Solutions</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>Solution</th><th>Approach</th><th>Pros</th><th>Cons</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-blue">JOIN FETCH</span></td><td><code>SELECT u FROM User u JOIN FETCH u.orders</code></td><td>Single query</td><td>Cartesian product</td></tr>
+<tr><td><span class="badge badge-green">@EntityGraph</span></td><td><code>@EntityGraph(attributePaths = "orders")</code></td><td>Declarative</td><td>Can't dynamic</td></tr>
+<tr><td><span class="badge badge-purple">@BatchSize</span></td><td><code>@BatchSize(size = 10)</code></td><td>Batch N into N/10 queries</td><td>Still several queries</td></tr>
+<tr><td><span class="badge badge-yellow">DTO Projection</span></td><td><code>SELECT new UserDTO(u.id, u.name) FROM User u</code></td><td>Only needed columns</td><td>Not managed</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>⚡ Lazy vs Eager Loading</h3>
+<div class="compare-grid">
+<div class="compare-card good"><h4>LAZY (Default)</h4><ul><li>Loads on access</li><li>Better performance</li><li>Use by default</li><li>Beware LazyInitException</li></ul></div>
+<div class="compare-card bad"><h4>EAGER</h4><ul><li>Loads immediately</li><li>Huge queries</li><li>Avoid unless necessary</li><li>Can cause N+1 anyway</li></ul></div>
+</div>
+<div class="card-common-mistake info-card"><div class="label">🚨 LazyInitializationException</div><p><strong>Why?</strong> Session closed before lazy data is accessed.</p><p><strong>Wrong fix:</strong> Open Session In View (holds connection during view rendering — dangerous!)</p><p><strong>Right fix:</strong> DTO mapping · fetch join · proper query design</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Hibernate Configuration — Batch &amp; Flush</h3>
+<div class="code-block"><div class="code-header"><span>application.yml</span><span>Optimization settings</span></div>
+<div class="code-body"><pre>spring:
+  jpa:
+    properties:
+      hibernate:
+        jdbc.batch_size: 25          <span class="cm"># Batch INSERT/UPDATE</span>
+        order_inserts: true          <span class="cm"># Group inserts</span>
+        order_updates: true          <span class="cm"># Group updates</span>
+        generate_statistics: true    <span class="cm"># Monitor in dev</span>
+        jdbc.fetch_size: 100         <span class="cm"># Rows per DB round trip</span></pre></div></div>
+</div>
+</div>
+</section>
+
+<section class="section theme-cyan" id="s13">
+<div class="section-header"><span class="num">13</span><h2>Spring Security — Authentication &amp; Authorization</h2></div>
+<div class="section-body">
+<div class="sub-section"><h3>🔐 AuthN vs AuthZ</h3>
+<div class="compare-grid">
+<div class="compare-card good"><h4>Authentication</h4><p style="text-align:center;font-size:2rem;margin:0.5rem 0;">❓</p><p style="text-align:center;"><strong>Who are you?</strong></p><p style="text-align:center;font-size:0.8rem;color:var(--gray-500);">Verifying identity (login)</p></div>
+<div class="compare-card good"><h4>Authorization</h4><p style="text-align:center;font-size:2rem;margin:0.5rem 0;">🔑</p><p style="text-align:center;"><strong>What can you access?</strong></p><p style="text-align:center;font-size:0.8rem;color:var(--gray-500);">Granting permissions (roles)</p></div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🔄 JWT Authentication Flow <span class="badge badge-purple">MOST ASKED</span></h3>
+<div class="flow-vertical">
+<div class="v-box b-blue">1. User sends credentials (username + password)</div><div class="v-down">↓</div>
+<div class="v-box b-green">2. Server validates credentials against DB</div><div class="v-down">↓</div>
+<div class="v-box b-yellow">3. Server generates JWT (header.payload.signature)</div><div class="v-down">↓</div>
+<div class="v-box b-purple">4. Client stores token (localStorage / cookie)</div><div class="v-down">↓</div>
+<div class="v-box b-blue">5. Client sends token in header: <code>Authorization: Bearer &lt;token&gt;</code></div><div class="v-down">↓</div>
+<div class="v-box b-green">6. Server validates signature &amp; expiry, extracts user context</div><div class="v-down">↓</div>
+<div class="v-box b-yellow">7. SecurityContextHolder populated → access granted</div>
+</div>
+<div class="card-key-takeaway info-card"><div class="label">💡 Why JWT?</div><p><strong>Stateless.</strong> Server stores no session. Ideal for microservices. Token contains all user info (signed, not encrypted).</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 SecurityFilterChain — Filter Ordering</h3>
+<div class="code-block"><div class="code-header"><span>Spring Security 6+ Configuration</span><span>Lambda DSL</span></div>
+<div class="code-body"><pre><span class="ann">@Configuration</span>
+<span class="ann">@EnableWebSecurity</span>
+<span class="kw">public class</span> <span class="tp">SecurityConfig</span> {
+
+    <span class="ann">@Bean</span>
+    <span class="kw">public</span> <span class="tp">SecurityFilterChain</span> <span class="fn">filterChain</span>(<span class="tp">HttpSecurity</span> http) <span class="kw">throws</span> <span class="tp">Exception</span> {
+        <span class="kw">return</span> http
+            .<span class="fn">authorizeHttpRequests</span>(auth -> auth
+                .<span class="fn">requestMatchers</span>(<span class="str">"/api/auth/**"</span>).<span class="fn">permitAll</span>()
+                .<span class="fn">requestMatchers</span>(<span class="str">"/api/admin/**"</span>).<span class="fn">hasRole</span>(<span class="str">"ADMIN"</span>)
+                .<span class="fn">anyRequest</span>().<span class="fn">authenticated</span>()
+            )
+            .<span class="fn">sessionManagement</span>(sm -> sm.<span class="fn">sessionCreationPolicy</span>(<span class="tp">SessionCreationPolicy</span>.STATELESS))
+            .<span class="fn">oauth2ResourceServer</span>(oauth2 -> oauth2.<span class="fn">jwt</span>(<span class="tp">Customizer</span>.<span class="fn">withDefaults</span>()))
+            .<span class="fn">cors</span>(cors -> cors.<span class="fn">configurationSource</span>(corsConfigurationSource()))
+            .<span class="fn">csrf</span>(csrf -> csrf.<span class="fn">disable</span>())
+            .<span class="fn">build</span>();
+    }
+}</pre></div></div>
+<div class="card-internal info-card"><div class="label">🔬 Filter Chain Order</div><p>1. BasicAuthenticationFilter → 2. UsernamePasswordAuthenticationFilter → 3. SecurityContextHolderFilter → 4. ExceptionTranslationFilter → 5. FilterSecurityInterceptor (last — authorization decision)</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Method-Level Security</h3>
+<div class="code-block"><div class="code-header"><span>@PreAuthorize / @PostAuthorize</span></div>
+<div class="code-body"><pre><span class="ann">@EnableMethodSecurity</span> <span class="cm">// Required in Spring Security 6+</span>
+<span class="kw">public class</span> <span class="tp">SecurityConfig</span> { }
+
+<span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="tp">OrderService</span> {
+    <span class="hl-line"><span class="ann">@PreAuthorize</span>(<span class="str">"hasRole('ADMIN')"</span>)</span>
+    <span class="kw">public void</span> <span class="fn">deleteOrder</span>(<span class="tp">Long</span> id) { }
+
+    <span class="hl-line"><span class="ann">@PreAuthorize</span>(<span class="str">"#order.userId == authentication.principal.id"</span>)</span>
+    <span class="kw">public void</span> <span class="fn">updateOrder</span>(<span class="ann">@P</span>(<span class="str">"order"</span>) <span class="tp">Order</span> order) { }
+}</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 CORS &amp; CSRF</h3>
+<div class="compare-grid">
+<div class="compare-card good"><h4>CORS Configuration</h4><div class="code-block" style="margin:0.5rem 0;"><div class="code-body" style="padding:0.5rem;"><pre><span class="ann">@Bean</span>
+<span class="kw">public</span> <span class="tp">CorsConfigurationSource</span> <span class="fn">corsConfig</span>() {
+    <span class="tp">CorsConfiguration</span> cfg = <span class="kw">new</span> <span class="tp">CorsConfiguration</span>();
+    cfg.<span class="fn">setAllowedOrigins</span>(<span class="tp">List</span>.<span class="fn">of</span>(<span class="str">"https://myapp.com"</span>));
+    cfg.<span class="fn">setAllowedMethods</span>(<span class="tp">List</span>.<span class="fn">of</span>(<span class="str">"GET","POST","PUT","DELETE"</span>));
+    <span class="kw">return</span> ...;
+}</pre></div></div></div>
+<div class="compare-card good"><h4>CSRF Protection</h4><p style="font-size:0.82rem;">Enabled by default for browser-based apps. <strong>Disable</strong> when building stateless REST APIs (JWT).</p><div class="code-block" style="margin:0.5rem 0;"><div class="code-body" style="padding:0.5rem;"><pre>.csrf(csrf -> csrf.disable())</pre></div></div></div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section theme-orange" id="s14">
+<div class="section-header"><span class="num">14</span><h2>Spring Boot Internals &amp; Startup Optimization</h2></div>
+<div class="section-body">
+<div class="card-interview info-card"><div class="label">🎯 Senior Interview Topic</div><p>Can you explain what happens from <code>main()</code> to a running server? This separates junior from senior.</p></div>
+
+<div class="sub-section"><h3>🚀 SpringApplication.run() — Full Boot Sequence</h3>
+<div class="flow-vertical">
+<div class="v-box b-blue">1. Bootstrap class loader — detect web application type (servlet/reactive)</div><div class="v-down">↓</div>
+<div class="v-box b-purple">2. Load ApplicationContextInitializers from spring.factories</div><div class="v-down">↓</div>
+<div class="v-box b-yellow">3. Load ApplicationListeners from spring.factories</div><div class="v-down">↓</div>
+<div class="v-box b-green">4. Determine main application class</div><div class="v-down">↓</div>
+<div class="v-box b-blue">5. Create ApplicationContext (AnnotationConfigServletWebServerApplicationContext)</div><div class="v-down">↓</div>
+<div class="v-box b-purple">6. Register @SpringBootApplication configuration class</div><div class="v-down">↓</div>
+<div class="v-box b-yellow">7. Refresh context (calls BeanFactory post-processors, register bean post-processors)</div><div class="v-down">↓</div>
+<div class="v-box b-green">8. Auto-configuration kicks in (all @Conditional checks)</div><div class="v-down">↓</div>
+<div class="v-box b-blue">9. Create embedded web server (Tomcat / Jetty / Undertow)</div><div class="v-down">↓</div>
+<div class="v-box b-purple">10. Publish ApplicationReadyEvent → App is running!</div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>⚡ Startup Optimization — 10 Techniques</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>#</th><th>Technique</th><th>Impact</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><code>spring.main.lazy-initialization=true</code></td><td>Defer all bean creation until first use</td></tr>
+<tr><td>2</td><td>Exclude unused auto-config: <code>@SpringBootApplication(exclude = {...})</code></td><td>Skip unnecessary bean scanning</td></tr>
+<tr><td>3</td><td>Enable AOT: <code>spring.aot.enabled=true</code></td><td>Pre-compile Spring at build time (Spring 3+ only)</td></tr>
+<tr><td>4</td><td>GraalVM Native Image compile</td><td>Sub-second startup (instant)</td></tr>
+<tr><td>5</td><td>Limit component scan: <code>@ComponentScan("com.myapp.core")</code></td><td>Scan fewer packages</td></tr>
+<tr><td>6</td><td>Avoid <code>@SpringBootApplication</code> with too many exclude</td><td>Use explicit @Import instead</td></tr>
+<tr><td>7</td><td>Reduce JPA auto-discovery: <code>spring.jpa.properties.hibernate.archive.autodetection=none</code></td><td>Skip entity scanning</td></tr>
+<tr><td>8</td><td>Use <code>spring-boot-starter-*</code> minimal dependencies</td><td>Less classpath scanning</td></tr>
+<tr><td>9</td><td>Clear <code>spring.autoconfigure.exclude</code> for unused configs</td><td>Skip condition evaluation</td></tr>
+<tr><td>10</td><td>Use <code>-Xverify:none</code> JVM arg (Java 8 only)</td><td>Skip bytecode verification</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Failure Analysis</h3>
+<div class="code-block"><div class="code-header"><span>Custom failure analyzer</span><span>Better error messages</span></div>
+<div class="code-body"><pre><span class="kw">public class</span> <span class="tp">PortInUseFailureAnalyzer</span> <span class="kw">implements</span> <span class="tp">FailureAnalyzer</span> {
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="tp">FailureAnalysis</span> <span class="fn">analyze</span>(<span class="tp">Throwable</span> failure) {
+        <span class="kw">if</span> (failure.<span class="fn">getCause</span>() <span class="kw">instanceof</span> <span class="tp">BindException</span>) {
+            <span class="kw">return new</span> <span class="tp">FailureAnalysis</span>(
+                <span class="str">"Port 8080 is already in use"</span>,
+                <span class="str">"Check if another process is running on port 8080 or set server.port"</span>,
+                failure
+            );
+        }
+        <span class="kw">return null</span>;
+    }
+}</pre></div></div>
+</div>
+</div>
+</section>
+
+<section class="section theme-green" id="s15">
+<div class="section-header"><span class="num">15</span><h2>Spring Boot Testing Strategies</h2></div>
+<div class="section-body">
+<div class="sub-section"><h3>📋 Slice Tests — When to Use What</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Annotation</th><th>What It Loads</th><th>When to Use</th></tr></thead>
+<tbody>
+<tr><td><code>@WebMvcTest</code></td><td>Web layer only (controllers, filters, converters)</td><td>Testing controllers — fastest test</td></tr>
+<tr><td><code>@DataJpaTest</code></td><td>JPA repos, entities, DataSource</td><td>Testing repositories and queries</td></tr>
+<tr><td><code>@JsonTest</code></td><td>JSON serialization</td><td>Testing Jackson/Gson mappings</td></tr>
+<tr><td><code>@RestClientTest</code></td><td>REST clients</td><td>Testing RestTemplate/WebClient</td></tr>
+<tr><td><code>@SpringBootTest</code></td><td>Full application context</td><td>Integration tests (slowest)</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🎯 @WebMvcTest Example</h3>
+<div class="code-block"><div class="code-header"><span>UserControllerTest.java</span><span>Slice test — mocks service layer</span></div>
+<div class="code-body"><pre><span class="ann">@WebMvcTest</span>(<span class="tp">UserController</span>.<span class="kw">class</span>)
+<span class="kw">class</span> <span class="tp">UserControllerTest</span> {
+    <span class="ann">@Autowired</span> <span class="kw">private</span> <span class="tp">MockMvc</span> mockMvc;
+
+    <span class="ann">@MockBean</span> <span class="kw">private</span> <span class="tp">UserService</span> userService;
+
+    <span class="ann">@Test</span>
+    <span class="kw">void</span> <span class="fn">shouldReturnUser</span>() <span class="kw">throws</span> <span class="tp">Exception</span> {
+        <span class="hl-line"><span class="fn">given</span>(userService.<span class="fn">findById</span>(1L))</span>
+            .<span class="fn">willReturn</span>(<span class="kw">new</span> <span class="tp">User</span>(1L, <span class="str">"John"</span>));
+
+        mockMvc.<span class="fn">perform</span>(<span class="fn">get</span>(<span class="str">"/api/users/1"</span>))
+            .<span class="fn">andExpect</span>(<span class="fn">status</span>().<span class="fn">isOk</span>())
+            .<span class="fn">andExpect</span>(<span class="fn">jsonPath</span>(<span class="str">"$.name"</span>).<span class="fn">value</span>(<span class="str">"John"</span>));
+    }
+}</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 @DataJpaTest Example</h3>
+<div class="code-block"><div class="code-header"><span>UserRepositoryTest.java</span><span>Rolls back after each test</span></div>
+<div class="code-body"><pre><span class="ann">@DataJpaTest</span>
+<span class="kw">class</span> <span class="tp">UserRepositoryTest</span> {
+    <span class="ann">@Autowired</span> <span class="kw">private</span> <span class="tp">UserRepository</span> userRepo;
+    <span class="ann">@Autowired</span> <span class="kw">private</span> <span class="tp">TestEntityManager</span> em;
+
+    <span class="ann">@Test</span>
+    <span class="kw">void</span> <span class="fn">shouldFindByEmail</span>() {
+        em.<span class="fn">persist</span>(<span class="kw">new</span> <span class="tp">User</span>(<span class="str">"test@email.com"</span>));
+
+        <span class="tp">Optional</span>&lt;<span class="tp">User</span>&gt; result = userRepo.<span class="fn">findByEmail</span>(<span class="str">"test@email.com"</span>);
+
+        <span class="fn">assertThat</span>(result).<span class="fn">isPresent</span>();
+    }
+}</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 @MockBean vs @Mock vs @InjectMocks</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Annotation</th><th>Scope</th><th>Replaces bean in context?</th><th>When</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-blue">@MockBean</span></td><td>Spring test</td><td>✅ Replaces real bean</td><td>Slice / integration tests</td></tr>
+<tr><td><span class="badge badge-green">@Mock</span></td><td>Unit test (Mockito)</td><td>❌ No context</td><td>Pure unit tests</td></tr>
+<tr><td><span class="badge badge-purple">@InjectMocks</span></td><td>Unit test (Mockito)</td><td>❌ No context</td><td>Inject mocks into target</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 TestContainers — Real DB Integration</h3>
+<div class="code-block"><div class="code-header"><span>TestContainers with @DataJpaTest</span><span>Real PostgreSQL in Docker</span></div>
+<div class="code-body"><pre><span class="ann">@DataJpaTest</span>
+<span class="ann">@Testcontainers</span>
+<span class="kw">class</span> <span class="tp">UserRepositoryIntegrationTest</span> {
+    <span class="ann">@Container</span>
+    <span class="hl-line"><span class="kw">static</span> <span class="tp">PostgreSQLContainer</span>&lt;?&gt; postgres = <span class="kw">new</span> <span class="tp">PostgreSQLContainer</span>(<span class="str">"postgres:15"</span>)</span>
+        .<span class="fn">withDatabaseName</span>(<span class="str">"testdb"</span>)
+        .<span class="fn">withUsername</span>(<span class="str">"test"</span>)
+        .<span class="fn">withPassword</span>(<span class="str">"test"</span>);
+
+    <span class="ann">@DynamicPropertySource</span>
+    <span class="kw">static void</span> <span class="fn">configureProperties</span>(<span class="tp">DynamicPropertyRegistry</span> reg) {
+        reg.<span class="fn">add</span>(<span class="str">"spring.datasource.url"</span>, postgres::<span class="fn">getJdbcUrl</span>);
+        reg.<span class="fn">add</span>(<span class="str">"spring.datasource.username"</span>, postgres::<span class="fn">getUsername</span>);
+        reg.<span class="fn">add</span>(<span class="str">"spring.datasource.password"</span>, postgres::<span class="fn">getPassword</span>);
+    }
+}</pre></div></div>
+</div>
+
+<div class="card-best-practice info-card"><div class="label">💡 Best Practice</div><p>Use <code>@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)</code> with <code>TestRestTemplate</code> for full integration tests. Use slice tests for faster feedback during development.</p></div>
+</div>
+</section>
+
+<section class="section theme-purple" id="s16">
+<div class="section-header"><span class="num">16</span><h2>Spring Data JPA — Advanced Patterns</h2></div>
+<div class="section-body">
+<div class="sub-section"><h3>📋 @Query — JPQL vs Native</h3>
+<div class="code-block"><div class="code-header"><span>Custom queries</span><span>JPQL vs native SQL</span></div>
+<div class="code-body"><pre><span class="kw">public interface</span> <span class="tp">UserRepository</span> <span class="kw">extends</span> <span class="tp">JpaRepository</span>&lt;<span class="tp">User</span>, <span class="tp">Long</span>&gt; {
+
+    <span class="ann">@Query</span>(<span class="str">"SELECT u FROM User u WHERE u.email = :email"</span>)
+    <span class="tp">Optional</span>&lt;<span class="tp">User</span>&gt; <span class="fn">findByEmail</span>(<span class="ann">@Param</span>(<span class="str">"email"</span>) <span class="tp">String</span> email);
+
+    <span class="ann">@Query</span>(<span class="kw">value</span> = <span class="str">"SELECT * FROM users WHERE email = :email"</span>,
+           <span class="hl-line">nativeQuery = <span class="kw">true</span></span>)
+    <span class="tp">User</span> <span class="fn">findByEmailNative</span>(<span class="ann">@Param</span>(<span class="str">"email"</span>) <span class="tp">String</span> email);
+
+    <span class="ann">@Modifying</span>
+    <span class="ann">@Query</span>(<span class="str">"UPDATE User u SET u.status = :status WHERE u.lastLogin &lt; :date"</span>)
+    <span class="kw">int</span> <span class="fn">deactivateOldUsers</span>(<span class="ann">@Param</span>(<span class="str">"status"</span>) <span class="tp">UserStatus</span> status,
+                           <span class="ann">@Param</span>(<span class="str">"date"</span>) <span class="tp">LocalDateTime</span> date);
+}</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Projections — Select Only Needed Fields</h3>
+<div class="code-block"><div class="code-header"><span>Interface-based projection</span><span>No entity loading</span></div>
+<div class="code-body"><pre><span class="kw">public interface</span> <span class="tp">UserSummary</span> {
+    <span class="tp">String</span> <span class="fn">getName</span>();
+    <span class="tp">String</span> <span class="fn">getEmail</span>();
+}
+
+<span class="kw">public interface</span> <span class="tp">UserRepository</span> {
+    <span class="hl-line"><span class="tp">List</span>&lt;<span class="tp">UserSummary</span>&gt; <span class="fn">findProjectedBy</span>();  <span class="cm">// Only name + email selected!</span></span>
+
+    <span class="cm">// DTO projection (no interface needed):</span>
+    <span class="hl-line"><span class="ann">@Query</span>(<span class="str">"SELECT new com.example.UserDTO(u.id, u.name) FROM User u"</span>)</span>
+    <span class="tp">List</span>&lt;<span class="tp">UserDTO</span>&gt; <span class="fn">findUserDTOs</span>();
+}</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 @EntityGraph — Dynamic Fetch Strategy</h3>
+<div class="code-block"><div class="code-header"><span>@EntityGraph</span><span>Override LAZY per query</span></div>
+<div class="code-body"><pre><span class="kw">public interface</span> <span class="tp">UserRepository</span> {
+    <span class="hl-line"><span class="ann">@EntityGraph</span>(attributePaths = { <span class="str">"orders"</span>, <span class="str">"profile"</span> })</span>
+    <span class="tp">List</span>&lt;<span class="tp">User</span>&gt; <span class="fn">findWithOrdersAndProfile</span>();
+
+    <span class="cm">// Named entity graph on entity:</span>
+    <span class="cm">// @NamedEntityGraph(name = "User.orders", attributeNodes = @NamedAttributeNode("orders"))</span>
+    <span class="ann">@EntityGraph</span>(<span class="kw">value</span> = <span class="str">"User.orders"</span>)
+    <span class="tp">List</span>&lt;<span class="tp">User</span>&gt; <span class="fn">findAllWithOrders</span>();
+}</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Auditing</h3>
+<div class="code-block"><div class="code-header"><span>Automatic timestamps</span><span>@CreatedDate, @LastModifiedDate</span></div>
+<div class="code-body"><pre><span class="ann">@EntityListeners</span>(<span class="tp">AuditingEntityListener</span>.<span class="kw">class</span>)
+<span class="ann">@MappedSuperclass</span>
+<span class="kw">public abstract class</span> <span class="tp">BaseEntity</span> {
+    <span class="ann">@CreatedDate</span>    <span class="kw">private</span> <span class="tp">LocalDateTime</span> createdAt;
+    <span class="ann">@LastModifiedDate</span> <span class="kw">private</span> <span class="tp">LocalDateTime</span> updatedAt;
+    <span class="ann">@CreatedBy</span>      <span class="kw">private</span> <span class="tp">String</span> createdBy;
+}
+
+<span class="cm">// Enable auditing:</span>
+<span class="ann">@EnableJpaAuditing</span>
+<span class="ann">@Configuration</span>
+<span class="kw">public class</span> <span class="tp">JpaConfig</span> { }</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Specification — Dynamic Queries</h3>
+<div class="code-block"><div class="code-header"><span>Criteria API with Spring Data</span><span>Type-safe dynamic queries</span></div>
+<div class="code-body"><pre><span class="kw">public interface</span> <span class="tp">UserRepository</span> <span class="kw">extends</span> <span class="tp">JpaRepository</span>&lt;<span class="tp">User</span>, <span class="tp">Long</span>&gt;,
+    <span class="hl-line"><span class="tp">JpaSpecificationExecutor</span>&lt;<span class="tp">User</span>&gt;</span> { }
+
+<span class="cm">// Usage:</span>
+<span class="kw">public class</span> <span class="tp">UserSpecs</span> {
+    <span class="kw">public static</span> <span class="tp">Specification</span>&lt;<span class="tp">User</span>&gt; <span class="fn">hasName</span>(<span class="tp">String</span> name) {
+        <span class="hl-line"><span class="kw">return</span> (root, query, cb) -> cb.<span class="fn">like</span>(root.<span class="fn">get</span>(<span class="str">"name"</span>), <span class="str">"%"</span> + name + <span class="str">"%"</span>);</span>
+    }
+}
+
+repo.<span class="fn">findAll</span>(<span class="tp">UserSpecs</span>.<span class="fn">hasName</span>(<span class="str">"John"</span>));</pre></div></div>
+</div>
+</div>
+</section>
+
+<section class="section theme-blue" id="s17">
+<div class="section-header"><span class="num">17</span><h2>Async &amp; Scheduling</h2></div>
+<div class="section-body">
+<div class="sub-section"><h3>⚡ @Async — Threading Model</h3>
+<div class="code-block"><div class="code-header"><span>@Async configuration</span><span>Custom thread pool</span></div>
+<div class="code-body"><pre><span class="ann">@EnableAsync</span>
+<span class="ann">@Configuration</span>
+<span class="kw">public class</span> <span class="tp">AsyncConfig</span> {
+    <span class="ann">@Bean</span>(<span class="str">"taskExecutor"</span>)
+    <span class="kw">public</span> <span class="tp">Executor</span> <span class="fn">taskExecutor</span>() {
+        <span class="tp">ThreadPoolTaskExecutor</span> exec = <span class="kw">new</span> <span class="tp">ThreadPoolTaskExecutor</span>();
+        exec.<span class="fn">setCorePoolSize</span>(5);
+        exec.<span class="fn">setMaxPoolSize</span>(10);
+        exec.<span class="fn">setQueueCapacity</span>(100);
+        exec.<span class="fn">setThreadNamePrefix</span>(<span class="str">"async-"</span>);
+        exec.<span class="fn">setRejectedExecutionHandler</span>(<span class="kw">new</span> <span class="tp">ThreadPoolExecutor</span>.CallerRunsPolicy());
+        exec.<span class="fn">initialize</span>();
+        <span class="kw">return</span> exec;
+    }
+}
+
+<span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="tp">EmailService</span> {
+    <span class="hl-line"><span class="ann">@Async</span>(<span class="str">"taskExecutor"</span>)</span>
+    <span class="kw">public</span> <span class="tp">CompletableFuture</span>&lt;<span class="tp">Boolean</span>&gt; <span class="fn">sendEmail</span>(<span class="tp">String</span> to, <span class="tp">String</span> body) {
+        <span class="cm">// Runs in separate thread from thread pool</span>
+        <span class="fn">Thread</span>.<span class="fn">sleep</span>(2000); <span class="cm">// Simulate slow operation</span>
+        <span class="kw">return</span> <span class="tp">CompletableFuture</span>.<span class="fn">completedFuture</span>(<span class="kw">true</span>);
+    }
+}</pre></div></div>
+<div class="card-common-mistake info-card"><div class="label">🚨 @Async + @Transactional</div><p>A method that is <strong>both</strong> <code>@Async</code> and <code>@Transactional</code> runs in a <strong>separate thread</strong>. The transaction runs in that thread's context, <strong>NOT</strong> the caller's thread. The caller's transaction does NOT propagate to the async method.</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 @Scheduled — Cron, FixedRate, FixedDelay</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Type</th><th>Syntax</th><th>Next execution starts</th><th>Threading</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-blue">fixedRate</span></td><td><code>@Scheduled(fixedRate=5000)</code></td><td>Every 5s regardless of previous completion</td><td>May overlap</td></tr>
+<tr><td><span class="badge badge-green">fixedDelay</span></td><td><code>@Scheduled(fixedDelay=5000)</code></td><td>5s after previous COMPLETES</td><td>Never overlaps</td></tr>
+<tr><td><span class="badge badge-purple">cron</span></td><td><code>@Scheduled(cron="0 0 * * * *")</code></td><td>Based on cron expression</td><td>Depends on config</td></tr>
+</tbody></table></div>
+<div class="code-block"><div class="code-header"><span>Scheduled tasks</span><span>Thread pool configuration</span></div>
+<div class="code-body"><pre><span class="ann">@EnableScheduling</span>
+<span class="ann">@Configuration</span>
+<span class="kw">public class</span> <span class="tp">SchedulingConfig</span> {
+    <span class="ann">@Bean</span>
+    <span class="kw">public</span> <span class="tp">TaskScheduler</span> <span class="fn">taskScheduler</span>() {
+        <span class="tp">ThreadPoolTaskScheduler</span> sched = <span class="kw">new</span> <span class="tp">ThreadPoolTaskScheduler</span>();
+        sched.<span class="fn">setPoolSize</span>(5);
+        sched.<span class="fn">setThreadNamePrefix</span>(<span class="str">"scheduled-"</span>);
+        <span class="kw">return</span> sched;
+    }
+}
+
+<span class="ann">@Component</span>
+<span class="kw">public class</span> <span class="tp">ReportScheduler</span> {
+    <span class="hl-line"><span class="ann">@Scheduled</span>(cron = <span class="str">"0 0 2 * * ?"</span>) <span class="cm">// Every day at 2 AM</span></span>
+    <span class="kw">public void</span> <span class="fn">generateDailyReport</span>() { }
+
+    <span class="hl-line"><span class="ann">@Scheduled</span>(fixedRate = 60000, initialDelay = 10000)</span>
+    <span class="kw">public void</span> <span class="fn">healthCheck</span>() { }
+}</pre></div></div>
+</div>
+</div>
+</section>
+
+<section class="section theme-yellow" id="s18">
+<div class="section-header"><span class="num">18</span><h2>Caching Deep Dive</h2></div>
+<div class="section-body">
+<div class="sub-section"><h3>📋 @Cacheable — Basic Usage</h3>
+<div class="code-block"><div class="code-header"><span>Cache annotations</span><span>@Cacheable, @CachePut, @CacheEvict</span></div>
+<div class="code-body"><pre><span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="tp">UserService</span> {
+    <span class="hl-line"><span class="ann">@Cacheable</span>(<span class="str">"users"</span>)       <span class="cm">// Check cache first → if miss, execute & store</span></span>
+    <span class="kw">public</span> <span class="tp">User</span> <span class="fn">findById</span>(<span class="tp">Long</span> id) {
+        <span class="kw">return</span> repo.<span class="fn">findById</span>(id).<span class="fn">orElseThrow</span>();
+    }
+
+    <span class="hl-line"><span class="ann">@CachePut</span>(<span class="str">"users"</span>)        <span class="cm">// Always execute & update cache</span></span>
+    <span class="kw">public</span> <span class="tp">User</span> <span class="fn">update</span>(<span class="tp">Long</span> id, <span class="tp">User</span> user) { }
+
+    <span class="hl-line"><span class="ann">@CacheEvict</span>(<span class="str">"users"</span>)      <span class="cm">// Remove from cache</span></span>
+    <span class="kw">public void</span> <span class="fn">delete</span>(<span class="tp">Long</span> id) { }
+
+    <span class="hl-line"><span class="ann">@Caching</span>(evict = { <span class="ann">@CacheEvict</span>(<span class="str">"users"</span>), <span class="ann">@CacheEvict</span>(<span class="str">"userLists"</span>) })</span>
+    <span class="kw">public void</span> <span class="fn">clearAllRelated</span>() { }
+}</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Cache Flow — Decision Diagram</h3>
+<div class="flow-diagram">
+<div class="flow-step step-blue"><span class="icon">🌐</span><span class="title">Request</span></div><span class="flow-arrow">→</span>
+<div class="flow-step step-green"><span class="icon">🔍</span><span class="title">Cache Check</span><span class="sub">@Cacheable</span></div>
+<div class="flow-step step-yellow"><span class="icon">✅</span><span class="title">Hit → Return</span><span class="sub">From cache</span></div>
+<span class="flow-arrow" style="transform:rotate(-90deg);">↘</span>
+<div class="flow-step step-purple"><span class="icon">💾</span><span class="title">DB Fetch</span></div><span class="flow-arrow">→</span>
+<div class="flow-step step-blue"><span class="icon">📝</span><span class="title">Cache Update</span></div><span class="flow-arrow">→</span>
+<div class="flow-step step-green"><span class="icon">✅</span><span class="title">Response</span></div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>⚠️ Thundering Herd / Cache Stampede</h3>
+<div class="card-common-mistake info-card"><div class="label">🚨 Production Problem</div><p>When cache key expires and 100 concurrent requests hit simultaneously — ALL go to DB. This can crash the database.</p>
+<p><strong>Solution:</strong> Use distributed locks (Redis Redlock) or <code>@Cacheable(sync=true)</code> which uses <code>synchronized</code> on the method to allow only one thread to compute the value.</p>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Cache Eviction Strategies</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Strategy</th><th>Description</th><th>Pros</th><th>Cons</th></tr></thead>
+<tbody>
+<tr><td>TTL (Time-To-Live)</td><td>Cache expires after fixed time</td><td>Simple</td><td>Stale data until expiry</td></tr>
+<tr><td>LRU (Least Recently Used)</td><td>Evicts least accessed entries</td><td>Memory-efficient</td><td>Cold entries evicted</td></tr>
+<tr><td>Write-Through</td><td>Write to DB + cache simultaneously</td><td>Always consistent</td><td>Write latency</td></tr>
+<tr><td>Write-Behind</td><td>Async write to DB after cache update</td><td>Fast writes</td><td>Data loss risk</td></tr>
+<tr><td>Cache-Aside</td><td>App manages cache (Spring default)</td><td>Flexible</td><td>Cache miss penalty</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Redis Distributed Cache</h3>
+<div class="code-block"><div class="code-header"><span>Redis cache configuration</span><span>With TTL per cache</span></div>
+<div class="code-body"><pre><span class="ann">@Configuration</span>
+<span class="ann">@EnableCaching</span>
+<span class="kw">public class</span> <span class="tp">RedisCacheConfig</span> {
+    <span class="ann">@Bean</span>
+    <span class="kw">public</span> <span class="tp">RedisCacheManager</span> <span class="fn">cacheManager</span>(<span class="tp">RedisConnectionFactory</span> factory) {
+        <span class="tp">RedisCacheConfiguration</span> config = <span class="tp">RedisCacheConfiguration</span>.<span class="fn">defaultCacheConfig</span>()
+            .<span class="fn">entryTtl</span>(<span class="tp">Duration</span>.<span class="fn">ofMinutes</span>(10))
+            .<span class="fn">disableCachingNullValues</span>();
+
+        <span class="kw">return</span> <span class="tp">RedisCacheManager</span>.<span class="fn">builder</span>(factory)
+            .<span class="fn">withCacheConfiguration</span>(<span class="str">"users"</span>, config.<span class="fn">entryTtl</span>(<span class="tp">Duration</span>.<span class="fn">ofMinutes</span>(5)))
+            .<span class="fn">withCacheConfiguration</span>(<span class="str">"products"</span>, config.<span class="fn">entryTtl</span>(<span class="tp">Duration</span>.<span class="fn">ofHours</span>(1)))
+            .<span class="fn">build</span>();
+    }
+}</pre></div></div>
+</div>
+</div>
+</section>
+
+<section class="section theme-cyan" id="s19">
+<div class="section-header"><span class="num">19</span><h2>WebFlux — Reactive Programming</h2></div>
+<div class="section-body">
+<div class="sub-section"><h3>📊 MVC vs WebFlux</h3>
+<div class="compare-grid">
+<div class="compare-card bad"><h4>Spring MVC</h4><ul><li>Thread-per-request model</li><li>Blocking I/O</li><li>Thread pool required</li><li>Higher memory per request</li><li>Simpler debugging</li><li>Better for CPU-bound work</li></ul></div>
+<div class="compare-card good"><h4>Spring WebFlux</h4><ul><li>Event-loop model</li><li>Non-blocking I/O</li><li>Very few threads (event loop)</li><li>Lower memory per request</li><li>Harder to debug</li><li>Better for I/O-bound work</li></ul></div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Reactive Controller Example</h3>
+<div class="code-block"><div class="code-header"><span>WebFlux Controller</span><span>Non-blocking from request to response</span></div>
+<div class="code-body"><pre><span class="ann">@RestController</span>
+<span class="kw">public class</span> <span class="tp">UserReactiveController</span> {
+
+    <span class="ann">@GetMapping</span>(<span class="str">"/api/users/{id}"</span>)
+    <span class="hl-line"><span class="kw">public</span> <span class="tp">Mono</span>&lt;<span class="tp">User</span>&gt; <span class="fn">getUser</span>(<span class="ann">@PathVariable</span> <span class="tp">Long</span> id) {</span>
+        <span class="kw">return</span> userRepo.<span class="fn">findById</span>(id);
+    }
+
+    <span class="ann">@GetMapping</span>(<span class="str">"/api/users"</span>)
+    <span class="hl-line"><span class="kw">public</span> <span class="tp">Flux</span>&lt;<span class="tp">User</span>&gt; <span class="fn">getAllUsers</span>() {</span>
+        <span class="kw">return</span> userRepo.<span class="fn">findAll</span>(); <span class="cm">// Reactive repository</span>
+    }
+
+    <span class="ann">@PostMapping</span>(<span class="str">"/api/users"</span>)
+    <span class="hl-line"><span class="kw">public</span> <span class="tp">Mono</span>&lt;<span class="tp">User</span>&gt; <span class="fn">create</span>(<span class="ann">@RequestBody</span> <span class="tp">Mono</span>&lt;<span class="tp">User</span>&gt; userMono) {</span>
+        <span class="kw">return</span> userMono.<span class="fn">flatMap</span>(userRepo::<span class="fn">save</span>);
+    }
+}</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Mono vs Flux — When to Use What</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Type</th><th>Count</th><th>Use Case</th></tr></thead>
+<tbody>
+<tr><td><span class="badge badge-blue">Mono</span></td><td>0 or 1 item</td><td>Single result: findById, save, any single response</td></tr>
+<tr><td><span class="badge badge-green">Flux</span></td><td>0 to N items</td><td>Multiple results: findAll, streaming data</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 WebClient — Non-Blocking HTTP Client</h3>
+<div class="code-block"><div class="code-header"><span>WebClient vs RestTemplate</span><span>Non-blocking external calls</span></div>
+<div class="code-body"><pre><span class="cm">// Old: RestTemplate (blocking — being deprecated)</span>
+<span class="tp">RestTemplate</span> rt = <span class="kw">new</span> <span class="tp">RestTemplate</span>();
+<span class="tp">User</span> user = rt.<span class="fn">getForObject</span>(<span class="str">"/api/users/1"</span>, <span class="tp">User</span>.<span class="kw">class</span>);
+
+<span class="cm">// New: WebClient (non-blocking, reactive)</span>
+<span class="tp">WebClient</span> client = <span class="tp">WebClient</span>.<span class="fn">create</span>(<span class="str">"https://api.example.com"</span>);
+
+<span class="hl-line"><span class="tp">Mono</span>&lt;<span class="tp">User</span>&gt; userMono = client.<span class="fn">get</span>()</span>
+    .<span class="fn">uri</span>(<span class="str">"/users/{id}"</span>, 1)
+    .<span class="fn">retrieve</span>()
+    .<span class="fn">bodyToMono</span>(<span class="tp">User</span>.<span class="kw">class</span>);
+
+<span class="cm">// Chain multiple async operations:</span>
+userMono.<span class="fn">flatMap</span>(user -> client.<span class="fn">post</span>()
+    .<span class="fn">uri</span>(<span class="str">"/notifications"</span>)
+    .<span class="fn">bodyValue</span>(<span class="kw">new</span> <span class="tp">Notification</span>(user.<span class="fn">getId</span>()))
+    .<span class="fn">retrieve</span>()
+    .<span class="fn">bodyToMono</span>(<span class="tp">Void</span>.<span class="kw">class</span>));</pre></div></div>
+</div>
+
+<div class="card-key-takeaway info-card"><div class="label">💡 When to Use WebFlux</div><p><strong>Good fit:</strong> I/O-bound (APIs, DB calls, external services), streaming, high concurrency with limited threads.</p><p><strong>Bad fit:</strong> CPU-bound (heavy computation, encryption), simple CRUD with low traffic, teams unfamiliar with reactive.</p></div>
+</div>
+</section>
+
+<section class="section theme-purple" id="s20">
+<div class="section-header"><span class="num">20</span><h2>WebSockets &amp; Server-Sent Events</h2></div>
+<div class="section-body">
+<div class="sub-section"><h3>📊 WebSocket vs SSE vs Polling</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Feature</th><th>Polling</th><th>SSE</th><th>WebSocket</th></tr></thead>
+<tbody>
+<tr><td>Direction</td><td>Client → Server only</td><td>Server → Client only</td><td>Bi-directional</td></tr>
+<tr><td>Protocol</td><td>HTTP (stateless)</td><td>HTTP (persistent)</td><td>WS (upgraded)</td></tr>
+<tr><td>Overhead</td><td>High (frequent requests)</td><td>Low</td><td>Lowest</td></tr>
+<tr><td>Auto-reconnect</td><td>❌</td><td>✅ Built-in</td><td>❌ Manual</td></tr>
+<tr><td>Use case</td><td>Quick hack</td><td>Real-time updates, notifications</td><td>Chat, gaming, collaborative editing</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 WebSocket with STOMP</h3>
+<div class="code-block"><div class="code-header"><span>WebSocket configuration</span><span>STOMP protocol</span></div>
+<div class="code-body"><pre><span class="ann">@Configuration</span>
+<span class="ann">@EnableWebSocketMessageBroker</span>
+<span class="kw">public class</span> <span class="tp">WebSocketConfig</span> <span class="kw">implements</span> <span class="tp">WebSocketMessageBrokerConfigurer</span> {
+    <span class="ann">@Override</span>
+    <span class="hl-line"><span class="kw">public void</span> <span class="fn">configureMessageBroker</span>(<span class="tp">MessageBrokerRegistry</span> config) {</span>
+        config.<span class="fn">enableSimpleBroker</span>(<span class="str">"/topic"</span>, <span class="str">"/queue"</span>);
+        config.<span class="fn">setApplicationDestinationPrefixes</span>(<span class="str">"/app"</span>);
+    }
+
+    <span class="ann">@Override</span>
+    <span class="hl-line"><span class="kw">public void</span> <span class="fn">registerStompEndpoints</span>(<span class="tp">StompEndpointRegistry</span> reg) {</span>
+        reg.<span class="fn">addEndpoint</span>(<span class="str">"/ws"</span>).<span class="fn">setAllowedOrigins</span>(<span class="str">"*"</span>);
+    }
+}
+
+<span class="ann">@Controller</span>
+<span class="kw">public class</span> <span class="tp">NotificationController</span> {
+    <span class="ann">@Autowired</span> <span class="kw">private</span> <span class="tp">SimpMessagingTemplate</span> messagingTemplate;
+
+    <span class="hl-line"><span class="kw">public void</span> <span class="fn">sendNotification</span>(<span class="tp">String</span> userId, <span class="tp">String</span> message) {</span>
+        messagingTemplate.<span class="fn">convertAndSendToUser</span>(userId, <span class="str">"/queue/notifications"</span>, message);
+    }
+}</pre></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 SSE — Server-Sent Events</h3>
+<div class="code-block"><div class="code-header"><span>SSE endpoint</span><span>Stream data to client</span></div>
+<div class="code-body"><pre><span class="ann">@RestController</span>
+<span class="kw">public class</span> <span class="tp">StockController</span> {
+    <span class="hl-line"><span class="ann">@GetMapping</span>(path = <span class="str">"/stocks/{symbol}"</span>, produces = <span class="tp">MediaType</span>.TEXT_EVENT_STREAM_VALUE)</span>
+    <span class="kw">public</span> <span class="tp">Flux</span>&lt;<span class="tp">StockPrice</span>&gt; <span class="fn">streamStock</span>(<span class="ann">@PathVariable</span> <span class="tp">String</span> symbol) {
+        <span class="kw">return</span> <span class="tp">Flux</span>.<span class="fn">interval</span>(<span class="tp">Duration</span>.<span class="fn">ofSeconds</span>(1))
+            .<span class="fn">map</span>(tick -> <span class="kw">new</span> <span class="tp">StockPrice</span>(symbol, <span class="tp">Math</span>.<span class="fn">random</span>() * 1000));
+    }
+}</pre></div></div>
+</div>
+</div>
+</section>
+
+<section class="section theme-orange" id="s21">
+<div class="section-header"><span class="num">21</span><h2>Microservices Patterns with Spring Cloud</h2></div>
+<div class="section-body">
+<div class="sub-section"><h3>🏛️ Architecture Overview</h3>
+<div class="flow-diagram">
+<div class="flow-step step-red"><span class="icon">🌐</span><span class="title">Client</span></div><span class="flow-arrow">→</span>
+<div class="flow-step step-blue"><span class="icon">⚖️</span><span class="title">API Gateway</span><span class="sub">Spring Cloud Gateway</span></div>
+<span class="flow-arrow">→</span>
+<div class="flow-step step-green"><span class="icon">📦</span><span class="title">Service A</span></div><span class="flow-arrow">↔</span>
+<div class="flow-step step-purple"><span class="icon">📦</span><span class="title">Service B</span></div><span class="flow-arrow">→</span>
+<div class="flow-step step-yellow"><span class="icon">🔍</span><span class="title">Service Discovery</span><span class="sub">Eureka / Consul</span></div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🔄 Circuit Breaker — Resilience4J</h3>
+<div class="flow-vertical">
+<div class="v-box b-green"><strong>CLOSED</strong><br><span style="font-size:0.7rem;">Normal operation — requests pass through</span></div><div class="v-down">↓ failures exceed threshold</div>
+<div class="v-box b-red"><strong>OPEN</strong><br><span style="font-size:0.7rem;">Requests fail FAST immediately (no call)</span></div><div class="v-down">↓ wait timeout elapses</div>
+<div class="v-box b-yellow"><strong>HALF-OPEN</strong><br><span style="font-size:0.7rem;">Limited test requests allowed</span></div><div class="v-down">↓ success → back to CLOSED | fail → back to OPEN</div>
+</div>
+<div class="code-block"><div class="code-header"><span>Resilience4J configuration</span><span>Circuit breaker + retry</span></div>
+<div class="code-body"><pre><span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="tp">PaymentService</span> {
+    <span class="hl-line"><span class="ann">@CircuitBreaker</span>(name = <span class="str">"paymentService"</span>, fallbackMethod = <span class="str">"fallback"</span>)</span>
+    <span class="hl-line"><span class="ann">@Retry</span>(name = <span class="str">"paymentService"</span>, maxAttempts = 3)</span>
+    <span class="kw">public</span> <span class="tp">Payment</span> <span class="fn">processPayment</span>(<span class="tp">Order</span> order) {
+        <span class="kw">return</span> paymentClient.<span class="fn">charge</span>(order);
+    }
+
+    <span class="kw">public</span> <span class="tp">Payment</span> <span class="fn">fallback</span>(<span class="tp">Order</span> order, <span class="tp">Throwable</span> t) {
+        <span class="fn">log.warn</span>(<span class="str">"Payment failed, using fallback"</span>, t);
+        <span class="kw">return</span> <span class="kw">new</span> <span class="tp">Payment</span>(order.<span class="fn">getId</span>(), <span class="tp">PaymentStatus</span>.PENDING);
+    }
+}</pre></div></div>
+<div class="card-production info-card"><div class="label">⚠️ Production Config — application.yml</div><div class="code-block" style="margin:0.5rem 0;"><div class="code-body" style="padding:0.5rem;"><pre>resilience4j.circuitbreaker.instances.paymentService:
+  slidingWindowSize: 10
+  minimumNumberOfCalls: 5
+  failureRateThreshold: 50
+  waitDurationInOpenState: 10s
+  permittedNumberOfCallsInHalfOpenState: 3</pre></div></div></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Retry + Dead Letter Queue Pattern</h3>
+<div class="flow-diagram">
+<div class="flow-step step-blue"><span class="icon">📥</span><span class="title">Message</span></div><span class="flow-arrow">→</span>
+<div class="flow-step step-yellow"><span class="icon">🔄</span><span class="title">Retry 1</span></div><span class="flow-arrow">→</span>
+<div class="flow-step step-yellow"><span class="icon">🔄</span><span class="title">Retry 2</span></div><span class="flow-arrow">→</span>
+<div class="flow-step step-yellow"><span class="icon">🔄</span><span class="title">Retry 3</span></div><span class="flow-arrow">→ fail</span>
+<div class="flow-step step-red"><span class="icon">☠️</span><span class="title">DLQ</span><span class="sub">Dead Letter Queue</span></div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Distributed Tracing — Micrometer</h3>
+<div class="code-block"><div class="code-header"><span>Micrometer Tracing</span><span>End-to-end request tracking</span></div>
+<div class="code-body"><pre><span class="cm">// Add dependency: io.micrometer:micrometer-tracing-bridge-brave</span>
+<span class="cm">// Add dependency: io.zipkin.reporter2:zipkin-reporter-brave</span>
+
+<span class="cm">// application.yml:</span>
+management.tracing.sampling.probability=1.0   <span class="cm">// 100% in dev</span>
+
+<span class="cm">// Auto-injects traceId into logs and HTTP headers</span>
+<span class="cm">// Trace: [traceId=abc123, spanId=def456] flows across services</span>
+<span class="cm">// View in Zipkin dashboard</span></pre></div></div>
+</div>
+</div>
+</section>
+
+<section class="section theme-red" id="s22">
+<div class="section-header"><span class="num">22</span><h2>Common Interview Traps — What Gets You Rejected</h2></div>
+<div class="section-body">
+<div class="card-interview info-card"><div class="label">🎯 These Are the Questions That Differentiate Senior from Junior</div><p>Below are the most common traps experienced interviewers use to probe depth of understanding.</p></div>
+
+<div class="sub-section"><h3>🚩 Trap 1: "How does @Transactional actually work?"</h3>
+<div class="card-common-mistake info-card"><div class="label">❌ Weak Answer</div><p>"It makes the method transactional."</p></div>
+<div class="card-key-takeaway info-card"><div class="label">✅ Strong Answer</div><p>"It's AOP-based. Spring creates a proxy (JDK or CGLIB) that wraps the method. The TransactionInterceptor (Around advice) calls PlatformTransactionManager.getTransaction() before method execution, and commit/rollback after. If the method is called from within the same class (self-invocation), the proxy is bypassed and @Transactional has NO effect."</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🚩 Trap 2: "How does Spring resolve circular dependencies?"</h3>
+<div class="card-common-mistake info-card"><div class="label">❌ Weak Answer</div><p>"It doesn't. You should avoid circular dependencies."</p></div>
+<div class="card-key-takeaway info-card"><div class="label">✅ Strong Answer</div><p>"Spring uses a three-level singleton cache: singletonObjects (fully created), earlySingletonObjects (semi-created), and singletonFactories (object factories). When Bean A depends on Bean B and vice versa, Spring creates A, places an early reference via ObjectFactory in level 3, uses that to inject into B, then B is fully created and injected into A. Constructor injection cannot resolve circular deps — only setter/field injection works."</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🚩 Trap 3: "What happens if I put @Transactional on a private method?"</h3>
+<div class="card-common-mistake info-card"><div class="label">❌ Weak Answer</div><p>"It works."</p></div>
+<div class="card-key-takeaway info-card"><div class="label">✅ Strong Answer</div><p>"It does NOT work. CGLIB proxies can only override public methods (they create subclasses). JDK proxies can only proxy interface methods which are always public. Private methods are not proxied, so @Transactional is silently ignored."</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🚩 Trap 4: "What is the difference between @Component, @Service, @Repository, @Controller?"</h3>
+<div class="card-common-mistake info-card"><div class="label">❌ Weak Answer</div><p>"They all register beans."</p></div>
+<div class="card-key-takeaway info-card"><div class="label">✅ Strong Answer</div><p>"<code>@Component</code> is the generic stereotype. <code>@Service</code> adds no extra behavior — it's semantic (business logic layer). <code>@Repository</code> enables translation of persistence exceptions into Spring's DataAccessException hierarchy. <code>@Controller</code> enables component scanning for <code>@RequestMapping</code> annotations and is detected by HandlerMapping."</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🚩 Trap 5: "Is Spring Boot's default scope singleton thread-safe?"</h3>
+<div class="card-common-mistake info-card"><div class="label">❌ Weak Answer</div><p>"Yes, singleton beans are thread-safe."</p></div>
+<div class="card-key-takeaway info-card"><div class="label">✅ Strong Answer</div><p>"Singleton beans are thread-safe ONLY if they are stateless. If you have mutable instance variables (like <code>private int count</code>), you WILL get race conditions because the singleton is shared across threads. Spring's container itself is thread-safe because beans are expected to be stateless — any mutable state must be explicitly synchronized by the developer."</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🚩 Trap 6: "What is Open Session in View? Is it good?"</h3>
+<div class="card-common-mistake info-card"><div class="label">❌ Weak Answer</div><p>"It prevents LazyInitializationException, so it's helpful."</p></div>
+<div class="card-key-takeaway info-card"><div class="label">✅ Strong Answer</div><p>"OSIV keeps the Hibernate session open during view rendering. The DB connection is held throughout the entire HTTP request. This can cause connection pool exhaustion, long-running transactions, and hidden N+1 queries in views. It's enabled by default in Spring Boot (<code>spring.jpa.open-in-view=true</code>). The senior approach is to disable it and use DTO projections / fetch joins / EntityGraph instead."</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🚩 Trap 7: "How does @Autowired resolve when there are multiple beans of the same type?"</h3>
+<div class="card-common-mistake info-card"><div class="label">❌ Weak Answer</div><p>"It throws an error."</p></div>
+<div class="card-key-takeaway info-card"><div class="label">✅ Strong Answer</div><p>"@Autowired first tries by type. If multiple candidates exist: (1) Check <code>@Primary</code> — if one bean has it, that wins. (2) Check <code>@Qualifier</code> — if specified, narrows by bean name. (3) Check parameter/field name — if it matches a bean name, that bean is used. If still ambiguous, <code>NoUniqueBeanDefinitionException</code> is thrown."</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🚩 Trap 8: "What's the difference between REQUIRES_NEW and NESTED propagation?"</h3>
+<div class="card-common-mistake info-card"><div class="label">❌ Weak Answer</div><p>"They both create new transactions."</p></div>
+<div class="card-key-takeaway info-card"><div class="label">✅ Strong Answer</div><p>"REQUIRES_NEW SUSPENDS the current transaction and creates a completely NEW one — using a separate DB connection. If the new tx rolls back, the outer tx can still commit. NESTED uses a SAVEPOINT within the same transaction (JDBC savepoints). If the nested tx rolls back, only the savepoint is rolled back, not the entire outer tx. The outer tx can still commit. NESTED does NOT require a separate connection — it's just a savepoint."</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🚩 Trap 9: "Can you use @Async with @Transactional?"</h3>
+<div class="card-common-mistake info-card"><div class="label">❌ Weak Answer</div><p>"Yes, they work together."</p></div>
+<div class="card-key-takeaway info-card"><div class="label">✅ Strong Answer</div><p>"They CAN be combined, but the transaction runs in the ASYNC thread, NOT the caller's thread. The caller's transaction does NOT propagate to the async method. Each @Async method with @Transactional creates its own transaction on a new thread. This is critical to understand — the connection is bound to the async thread, not the request thread."</p></div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>🚩 Trap 10: "How does Spring Boot auto-configuration work?"</h3>
+<div class="card-common-mistake info-card"><div class="label">❌ Weak Answer</div><p>"It just works. Spring Boot configures things automatically."</p></div>
+<div class="card-key-takeaway info-card"><div class="label">✅ Strong Answer</div><p>"<code>@EnableAutoConfiguration</code> imports <code>AutoConfigurationImportSelector</code> which uses <code>SpringFactoriesLoader</code> to load <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code>. This file lists ~130 auto-configuration classes. Each class has <code>@Conditional*</code> annotations (like <code>@ConditionalOnClass</code>, <code>@ConditionalOnMissingBean</code>, <code>@ConditionalOnProperty</code>) that determine whether the configuration applies based on classpath contents, existing beans, and configured properties. Auto-configuration is NOT magic — it's conditional bean registration."</p></div>
+</div>
+</div>
+</section>
+
+<section class="section theme-cyan" id="s23">
+<div class="section-header"><span class="num">23</span><h2>Real Production Scenarios — Debugging Like a Senior</h2></div>
+<div class="section-body">
+<div class="card-production info-card"><div class="label">⚡ These Are Real Incidents I've Seen in Production</div><p>Understanding these scenarios separates engineers who can code from engineers who can solve real problems.</p></div>
+
+<div class="sub-section"><h3>📋 Scenario 1: Connection Pool Exhaustion</h3>
+<div class="card-common-mistake info-card"><div class="label">⚠️ The Problem</div>
+<p><strong>Symptoms:</strong> App becomes unresponsive after running for a few hours. <code>HikariPool-1 - Connection is not available, request timed out after 30000ms</code>.</p>
+<p><strong>Root causes:</strong></p>
+<ul>
+<li>Long-running <code>@Transactional</code> methods (holding connections during HTTP calls)</li>
+<li><code>REQUIRES_NEW</code> grabbing multiple connections per request</li>
+<li>Open Session In View holding connections during view rendering</li>
+<li>Missing connection release in <code>@Async</code> methods</li>
+<li>Leaked connections from third-party libraries</li>
+</ul>
+<p><strong>Diagnosis:</strong> Enable Hikari metrics: <code>spring.datasource.hikari.metrics=true</code>. Monitor active vs idle connections. Add thread dump analysis.</p>
+<p><strong>Fix:</strong> Move external API calls outside transactions. Reduce <code>REQUIRES_NEW</code> usage. Set <code>spring.jpa.open-in-view=false</code>. Right-size pool: <code>spring.datasource.hikari.maximum-pool-size=20</code>.</p>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Scenario 2: The Silent N+1 That Kills Performance</h3>
+<div class="card-common-mistake info-card"><div class="label">⚠️ The Problem</div>
+<p><strong>Symptoms:</strong> API endpoint that lists 100 users takes 5+ seconds. DB CPU spikes. Only 100 users, so pagination is not the issue.</p>
+<p><strong>Root cause:</strong> N+1 query problem. <code>findAll()</code> executes 1 query for users + 100 queries for each user's orders = 101 queries.</p>
+<p><strong>Diagnosis:</strong> Enable Hibernate stats: <code>spring.jpa.properties.hibernate.generate_statistics=true</code>. Look for "100 statements" logged for a single endpoint. Or use <code>datasource-proxy</code> to log all queries.</p>
+<p><strong>Fix:</strong> Use <code>JOIN FETCH</code>, <code>@EntityGraph</code>, or DTO projection. Always check query count before deploying to production.</p>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Scenario 3: Transactional Method Called from Within Same Class</h3>
+<div class="card-common-mistake info-card"><div class="label">⚠️ The Problem</div>
+<p><strong>Symptoms:</strong> A <code>@Transactional</code> method DOES roll back when called directly from a controller, but DOES NOT roll back when called from another method in the same service.</p>
+<p><strong>Root cause:</strong> Self-invocation problem. <code>this.method()</code> bypasses the AOP proxy.</p>
+<p><strong>Diagnosis:</strong> Check if the caller is in the same class. If <code>service.methodA()</code> calls <code>this.methodB()</code> where B is <code>@Transactional</code>, the proxy is bypassed.</p>
+<p><strong>Fix:</strong> Inject the proxy into itself (<code>@Autowired private MyService self</code>), use <code>AopContext.currentProxy()</code>, or extract the transactional method to a separate service.</p>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Scenario 4: LazyInitializationException in REST Controller</h3>
+<div class="card-common-mistake info-card"><div class="label">⚠️ The Problem</div>
+<p><strong>Symptoms:</strong> <code>LazyInitializationException: could not initialize proxy — no Session</code> when accessing <code>user.getOrders()</code> in a controller or serializer.</p>
+<p><strong>Root cause:</strong> The Hibernate session was closed before the lazy association was accessed. The entity was loaded, the transaction committed, session closed, then Jackson serialization triggered lazy loading.</p>
+<p><strong>Fix:</strong> Use DTO projections (best), <code>JOIN FETCH</code> in the query, <code>@EntityGraph</code>, or disable OSIV only after you've fixed all lazy loading issues.</p>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Scenario 5: Cache Stampede Takes Down Database</h3>
+<div class="card-common-mistake info-card"><div class="label">⚠️ The Problem</div>
+<p><strong>Symptoms:</strong> Every hour at :00, DB CPU spikes to 100%. Queries time out. Cache TTL is set to 1 hour.</p>
+<p><strong>Root cause:</strong> Cache stampede — all cache entries expire at the same time, and all concurrent requests hit the database simultaneously.</p>
+<p><strong>Fix:</strong> Add random jitter to TTL (<code>entryTtl(Duration.ofMinutes(60 + Random.nextInt(10)))</code>), use <code>@Cacheable(sync=true)</code>, or pre-warm the cache before the stampede window.</p>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Scenario 6: Slow Spring Boot Startup in Production</h3>
+<div class="card-common-mistake info-card"><div class="label">⚠️ The Problem</div>
+<p><strong>Symptoms:</strong> 60+ second startup time. Kubernetes liveness probe kills the pod before it's ready.</p>
+<p><strong>Root causes &amp; fixes:</strong></p>
+<ul>
+<li><strong>Classpath scanning:</strong> Limit <code>@ComponentScan</code> to specific packages</li>
+<li><strong>Auto-configuration lag:</strong> Exclude unused auto-configs with <code>@SpringBootApplication(exclude=...)</code></li>
+<li><strong>JPA entity scanning:</strong> Set <code>spring.jpa.properties.hibernate.archive.autodetection=none</code></li>
+<li><strong>Lazy init:</strong> <code>spring.main.lazy-initialization=true</code></li>
+<li><strong>AOT compilation:</strong> Use Spring Boot 3+ AOT for image optimization</li>
+</ul>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Scenario 7: Security Misconfiguration — Exposed Internal APIs</h3>
+<div class="card-common-mistake info-card"><div class="label">⚠️ The Problem</div>
+<p><strong>Symptoms:</strong> A new developer adds a controller without realizing security isn't applied globally. The endpoint <code>/api/admin/reset-password</code> is accessible without authentication.</p>
+<p><strong>Fix:</strong> Use deny-by-default: <code>.anyRequest().authenticated()</code> instead of permit-all. Use <code>@PreAuthorize</code> on all admin methods. Never rely on developers remembering to secure endpoints — use <strong>centralized security rules</strong> in <code>SecurityFilterChain</code>. Run security audit tests that verify all endpoints require auth.</p>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="sub-section"><h3>📋 Scenario 8: Async Method Exceptions Are Silently Swallowed</h3>
+<div class="card-common-mistake info-card"><div class="label">⚠️ The Problem</div>
+<p><strong>Symptoms:</strong> An <code>@Async</code> method fails but nobody notices. The caller continues as if nothing happened.</p>
+<p><strong>Root cause:</strong> <code>@Async</code> methods run in a separate thread. If the method returns <code>void</code>, exceptions are caught by the <code>AsyncUncaughtExceptionHandler</code> and typically logged but NOT propagated. If the method returns <code>Future</code>/<code>CompletableFuture</code>, the exception is captured in the Future.</p>
+<p><strong>Fix:</strong> Always return <code>CompletableFuture</code> from async methods. Configure a custom <code>AsyncUncaughtExceptionHandler</code> to alert on failures. Never use <code>void</code> for async methods that can fail.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section theme-blue" style="text-align:center;">
+<div class="section-body">
+<p style="font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">Spring Engineering Handbook v2.0</p>
+<p style="color:var(--gray-500);">23 topics · 50+ flow diagrams · 70+ code examples</p>
+<p style="color:var(--gray-400);font-size:0.8rem;margin-top:0.5rem;">Transformed from original Spring Cheat Sheet · Expanded for product-company interviews · May 2026</p>
+<p style="color:var(--gray-400);font-size:0.75rem;margin-top:1rem;">Key: <span class="badge badge-blue">Blue = Core concept</span> · <span class="badge badge-green">Green = Best practice</span> · <span class="badge badge-yellow">Yellow = Interview insight</span> · <span class="badge badge-red">Red = Gotcha/Pitfall</span> · <span class="badge badge-purple">Purple = Internal working</span> · <span class="badge badge-cyan">Cyan = Production scenario</span></p>
+</div>
+</section>
+</div>
+</body>
+</html>
